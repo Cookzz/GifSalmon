@@ -1,7 +1,7 @@
 {
-    "name": "GifTuna",
+    "name": "GifSalmon",
     "build": {
-        "appId": "com.ndmweb.giftuna",
+        "appId": "com.cookzz.gifsalmon",
         "mac": {
             "category": "public.app-category.image-tools",
             "icon": "../resources/logo-hires-v2.icns"
