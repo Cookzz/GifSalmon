@@ -3,9 +3,9 @@
 // All of the Node.js APIs are available in this process.
 
 const electron = require('electron')
-const {ipcRenderer} = electron
-const {dialog} = electron.remote
-const {shell} = require('electron')
+const { ipcRenderer } = electron
+const dialog = electron.dialog
+const { shell, webUtils } = electron
 
 const url = require('url')
 const path = require('path')
@@ -17,8 +17,6 @@ global.angular = require('angular');
 
 var app = angular.module('giftuna',[]);
 app.controller('installFfmpeg',function($scope){
-
-
   $scope.ffmpeg_click = function(){
     shell.openExternal("http://ffmpeg.org");
   }
@@ -44,6 +42,7 @@ app.controller('installFfmpeg',function($scope){
 
 });
 app.controller('gifSettings',function($scope,$filter,$timeout,$rootScope){
+  console.log("scope?", $scope)
   $scope.status = {
     state:0,
     export:{progress:0,size:0,path:null}
@@ -76,6 +75,7 @@ app.controller('gifSettings',function($scope,$filter,$timeout,$rootScope){
   };
   $scope.settings = angular.copy($scope.defaults);
   $scope.color_value = 256;
+  $scope.childWindow = null
 
   $scope.$watch('color_value',function(nv){
     if(nv){
@@ -111,23 +111,27 @@ app.controller('gifSettings',function($scope,$filter,$timeout,$rootScope){
     }));
   }
   $scope.export = function(){
-    var base = path.parse($scope.settings.file.input.path);
+    const filePath = webUtils.getPathForFile($scope.settings.file.input)
+    var base = path.parse(filePath);
     var output = path.join(base.dir, base.name+'.gif');
-    dialog.showSaveDialog({title:"Export GIF", defaultPath: output, buttonLabel:"Export"}, function(outputFile){
+
+    //save dialog doesnt work in renderer anymore, we invoke it to the main instead
+    ipcRenderer.invoke("save-dialog", output).then((outputFile)=>{
       console.log(outputFile);
       if(outputFile){
         $scope.status.export = {progress:0, size:0, path:outputFile};
         $scope.status.state = 4;
 
         $scope.$apply();
-        ipcRenderer.send('exportGif', $scope.settings.file.input.path, outputFile, $scope.palette, $scope.settings);
-      }
-      // $rootScope.exportStatus.filepath = file;
+        ipcRenderer.send('exportGif', filePath, outputFile, $scope.palette, $scope.settings);
+
+        // $rootScope.exportStatus.filepath = file;
       // $rootScope.exportStatus.filename = path.basename(file);
       // $rootScope.exportStatus.status = 1;
       // $rootScope.exportStatus.totalFrames = Math.floor($rootScope.currentSource.stream.duration * $rootScope.prefs.fps);
       // ipcRenderer.send('exportGif', $rootScope.currentSource.source.file.path, file, $rootScope.colorPalette, $rootScope.prefs);
-    });
+      }
+    })
   }
   $scope.cancelExport = function(){
     $scope.status.export.canceling=true;
@@ -190,14 +194,21 @@ app.controller('gifSettings',function($scope,$filter,$timeout,$rootScope){
     $scope.cancel();
 
     $scope.status.state=2;
-    ipcRenderer.send('getPalette', $scope.settings.file.input.path, $scope.settings)
+
+    console.log("palette settings", $scope.settings)
+
+    const path = webUtils.getPathForFile($scope.settings.file.input)
+
+    ipcRenderer.send('getPalette', path, $scope.settings)
   }
   $scope.refreshThumbnail = function(){
     $scope.thumbnail = null;
     $scope.status.state=3;
     var time = $scope.frames.current;
-    ipcRenderer.send('getThumbnail', $scope.settings.file.input.path, $scope.palette, time, $scope.settings)
+    const path = webUtils.getPathForFile($scope.settings.file.input)
+    ipcRenderer.send('getThumbnail', path, $scope.palette, time, $scope.settings)
   }
+  
   ipcRenderer.on('export_canceled',function(ev,progress){
     console.log("CANCELED");
     $scope.status.export.canceling=false;
@@ -221,14 +232,12 @@ app.controller('gifSettings',function($scope,$filter,$timeout,$rootScope){
 
 
   ipcRenderer.on('probeResult', (event, probe) => {
-    console.log(probe);
+    // console.log("probe result", probe);
     var videoStream = probe.streams.find(function(it){return it.codec_type=='video'; });
     if(!videoStream){
       console.error("No video stream found");
       return;
-    }
-
-    ;
+    };
 
     $scope.frames.max = (Math.floor(videoStream.duration * 10) / 10).toFixed(1) - 0.1; //videoStream ? Math.floor(videoStream.duration * $scope.settings.fps) : 0;
     $scope.settings.probe = {duration:videoStream.duration, rate:(videoStream.r_frame_rate||videoStream.avg_frame_rate)}
@@ -251,7 +260,8 @@ app.controller('gifSettings',function($scope,$filter,$timeout,$rootScope){
       $scope.palette = paletteResult;
       $scope.status.state=3;
       var time = $scope.frames.current;
-      ipcRenderer.send('getThumbnail', $scope.settings.file.input.path, $scope.palette, time, $scope.settings)
+      const path = webUtils.getPathForFile($scope.settings.file.input)
+      ipcRenderer.send('getThumbnail', path, $scope.palette, time, $scope.settings)
       $scope.$apply();
     }
   });
@@ -265,12 +275,14 @@ app.controller('gifSettings',function($scope,$filter,$timeout,$rootScope){
   $scope.$watch('settings.file.input',function(nv){
     //reset file input
     if(nv){
+      const path = webUtils.getPathForFile(nv)
+
       $scope.frames.current=0;
       $scope.status.state=1;
       $scope.palette = null;
       $scope.thumbnail = null;
       $scope.settings.color = angular.copy($scope.defaults.color);
-      ipcRenderer.send('probeInput', nv.path)
+      ipcRenderer.send('probeInput', path)
     }
   });
 });
@@ -436,8 +448,8 @@ return {
         if(scope.pixels.length>0){
           var canvas_copy = document.createElement('canvas');
           var ctx_copy = canvas_copy.getContext('2d');
-
           var idata = ctx_copy.getImageData(0,0,16,16);
+
           for(var i=0;i<idata.data.length;i+=4){
             var pixel = Math.floor(i/4);
             idata.data[i] = scope.pixels[pixel] ? scope.pixels[pixel][0] : 0;
@@ -504,7 +516,6 @@ return {
   }
 })
 
-
 app.directive('frameScrubber',function(){
   return {
     scope: {
@@ -537,6 +548,7 @@ app.directive('frameScrubber',function(){
     }
   }
 })
+
 app.directive('gifPreview',function(){
   return {
     // template: '<div class="preview-div" ng-style="$previewStyle()"></div>',

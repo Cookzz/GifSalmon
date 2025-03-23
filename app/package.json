@@ -1,20 +1,20 @@
 {
-  "name": "GifTuna",
-  "build": {
-    "appId": "com.ndmweb.giftuna",
-    "mac": {
-      "category": "public.app-category.image-tools",
-      "icon": "../resources/logo-hires-v2.icns"
+    "name": "GifTuna",
+    "build": {
+        "appId": "com.ndmweb.giftuna",
+        "mac": {
+            "category": "public.app-category.image-tools",
+            "icon": "../resources/logo-hires-v2.icns"
+        }
+    },
+    "version": "1.0.7",
+    "main": "main.js",
+    "dependencies": {
+        "angular": "^1.8.3",
+        "ffbinaries": "^1.1.6",
+        "fix-path": "^4.0.0",
+        "jquery": "^3.7.1",
+        "lowdb": "^7.0.1",
+        "which": "^5.0.0"
     }
-  },
-  "version": "1.0.7",
-  "main": "main.js",
-  "dependencies": {
-    "angular": "^1.6.4",
-    "ffbinaries": "^1.0.1",
-    "fix-path": "^2.1.0",
-    "jquery": "^3.2.1",
-    "lowdb": "^0.16.2",
-    "which": "^1.2.14"
-  }
 }

@@ -1,7 +1,8 @@
 {
-  "name": "gif-tuna",
+  "name": "gif-salmon",
   "version": "1.0.7",
   "description": "A modern cross-platform video to gif converter",
+  "main": "main.js",
   "scripts": {
     "postinstall":"npm --prefix ./app install ./app",
     "start": "electron ./app/",
@@ -13,7 +14,7 @@
   "author": "brian@ndmweb.com (@dudewheresmycode)",
   "license": "MIT",
   "devDependencies": {
-    "electron": "~1.6.2",
-    "electron-packager": "^8.7.1"
+    "electron": "^35.0.3",
+    "electron-packager": "^17.1.2"
   }
 }
