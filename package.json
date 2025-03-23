@@ -4,7 +4,6 @@
   "description": "A modern cross-platform video to gif converter",
   "main": "main.js",
   "scripts": {
-    "postinstall":"npm --prefix ./app install ./app",
     "start": "electron ./app/",
     "build_mac": "electron-packager ./app GifTuna --ignore=.gitignore --platform=darwin --icon=./resources/logo-hires-v2.icns --out=./build/mac/ --overwrite",
     "build_win": "electron-packager ./app GifTuna --platform=win32 --icon=./resources/logo-hires-v2.iconset --out=./build/win/ --overwrite",
