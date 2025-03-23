@@ -15,7 +15,7 @@ require("./lib/minicolors/jquery.minicolors.js");
 global.jQuery = global.$ = require('jquery');
 global.angular = require('angular');
 
-var app = angular.module('giftuna',[]);
+var app = angular.module('gifsalmon',[]);
 app.controller('installFfmpeg',function($scope){
   $scope.ffmpeg_click = function(){
     shell.openExternal("http://ffmpeg.org");

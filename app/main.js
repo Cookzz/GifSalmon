@@ -62,7 +62,6 @@ app.whenReady().then(() => {
         ffmpegOpts = { path: path.dirname(ffmpeg_store.ffmpeg), nothrow: true } 
     }
 
-    console.log("run ffmpeg")
     const hasFfmpeg = which.sync('ffmpeg', ffmpegOpts ? ffmpegOpts : { nothrow: true })
 
     ffmpeg_path = (hasFfmpeg) ? hasFfmpeg : false;
