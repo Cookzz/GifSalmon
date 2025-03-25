@@ -16,12 +16,18 @@ An updated version of [GifTuna](https://github.com/dudewheresmycode/GifTuna) for
 * AngularJS (have not upgraded to Angular.io yet)
 * No bug fixes were done (yet)
 
-## Upcoming
+## Plans
 
 * Update to Angular.io and deprecate AngularJS
 * Re-writing of the entire application but will keep the core functionality, appearance, etc. the same the best I can.
 * Bug fixes
 * Auto-download of ffmpeg instead of prompting user to do it instead
+
+## What is in progress
+
+* Slowly migrating AngularJS to Angular v19 on a separate folder for testing, may take up to a month for anything to be ready
+* Maintaining and cleaning up current codebase but will not do any drastic changes in preparation for version 2.0.0
+* Fix bugs if there is any found
 
 ## Why
 
