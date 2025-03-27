@@ -329,7 +329,7 @@ app.directive('inputSelect',() => {
     link: (scope, ele, attr, ngModelCtl) => {
       var $file = $("<input type=\"file\" />");
       $file.on('change', (e) => {
-        var file = $(this).get(0).files[0];
+        var file = e.target.files[0];
         console.log(file);
         ngModelCtl.$setViewValue(file);
         ngModelCtl.$render();
