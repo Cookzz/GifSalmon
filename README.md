@@ -1,5 +1,6 @@
 # GifSalmon
 A gif tuning application for Mac, Windows and Linux.
+![Imgur](https://imgur.com/jY93aln)
 
 An updated version of [GifTuna](https://github.com/dudewheresmycode/GifTuna) for 2025.
 
