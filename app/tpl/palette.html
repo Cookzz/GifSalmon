@@ -1,6 +1,6 @@
 <div class="pixel-palette">
   <div class="pixel-pixels">
-    <a ng-click="pickMe($index,$event)" ng-repeat="p in pixels track by $index" class="pixel" ng-style="$color(p)" ng-class={"on":pixelIndex==$index}></a>
+    <a ng-click="pickMe($index,$event)" ng-repeat="p in pixels track by $index" class="pixel" ng-style="$color(p)" ng-class="{'on':pixelIndex==$index}"></a>
   </div>
   <div class="pixel-picker">
     <div class="picker-actions">
@@ -18,5 +18,4 @@
       <input type="text" class="pixel-mini-colors" />
     </div>
   </div>
-
 </div>

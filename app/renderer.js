@@ -353,17 +353,19 @@ app.directive('pixelPalette', ($timeout,$rootScope) => {
       maxColors:'='
     },
     link: (scope, ele, attr, ngModelCtl) => {
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
-
-      scope.pixels = scope.ngModel ? read_palette(scope.ngModel) : [];
+      if (scope.ngModel){
+        read_palette(scope, scope.ngModel)
+      } else {
+        scope.pixels = []
+      }
       scope.rgb = {};
 
       scope.$watch('ngModel', (nv,ov) => {
-        if(nv && nv!=ov){
-          scope.pixels = read_palette(nv);
+        if (nv && nv != ov){
+          // scope.pixels = read_palette(nv);
+          read_palette(scope, nv)
         }
-        if(nv==null){
+        if (nv == null){
           scope.pixels = [];
         }
       })
@@ -478,35 +480,31 @@ app.directive('pixelPalette', ($timeout,$rootScope) => {
             return new Array(7-h.length).join("0")+h
           })(bin.toString(16).toUpperCase())
       }
-      read_palette = (img_src) => {
+      read_palette = (scope, img_src) => {
         let img = new Image();
         img.src = 'data:image/png;base64,'+img_src;
-        canvas.width = 16;
-        canvas.height = 16;
-        ctx.clearRect(0,0,16,16);
-        ctx.drawImage(img,0,0);
-        // scope.pixels = [];
-        const pixel_array = [];
-        const pixel_data = ctx.getImageData(0,0,16,16);
-        for (let i=0; i < pixel_data.data.length; i+=4){
-          let p = [];
-          p[0] = pixel_data.data[i];
-          p[1] = pixel_data.data[i+1];
-          p[2] = pixel_data.data[i+2];
-          p[3] = 255;
-          if(pixel_array.length < scope.maxColors)
-            pixel_array.push(p);
-        }
-        return pixel_array;
-        // scope.pixels.push([0,0,0,0]);
-        // ngModelCtl.$setViewValue(canvas.toDataURL("image/png").split('base64,')[1]);
-        // ngModelCtl.$render();
 
-        // for(var x=0;x<16;x++){
-        //   for(var y=0;y<16;y++){
-        //     pixels.push(ctx.getImageData(x,y,1,1))
-        //   }
-        // }
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          
+          const pixel_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const pixel_array = [];
+
+          for (let i=0; i < pixel_data.data.length; i+=4){
+            let p = [];
+            p[0] = pixel_data.data[i];
+            p[1] = pixel_data.data[i+1];
+            p[2] = pixel_data.data[i+2];
+            p[3] = 255;
+            if(pixel_array.length < scope.maxColors)
+              pixel_array.push(p);
+          }
+          scope.pixels = pixel_array
+        }
       }
     }
   }
