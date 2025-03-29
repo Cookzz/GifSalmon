@@ -7,7 +7,7 @@
             "icon": "../resources/logo-hires-v2.icns"
         }
     },
-    "version": "1.0.8",
+    "version": "1.0.9",
     "main": "main.js",
     "dependencies": {
         "angular": "^1.8.3",
