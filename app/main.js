@@ -30,7 +30,8 @@ const createWindow = (needs_ffmpeg) => {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
-        }
+        },
+        autoHideMenuBar: true
     });
     win.loadURL(url.format({
         pathname: join(__dirname, needs_ffmpeg ? 'ffmpeg.html':'index.html'),
