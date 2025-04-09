@@ -1,0 +1,12 @@
+.scrubber-frame {
+    flex: 0 0 auto;
+    min-width: 30px;
+    text-align: center;
+}
+.scrubber-bar {
+    flex: 1 1 auto;
+    padding: 0 10px;
+}
+input {
+    width: 100%;
+}

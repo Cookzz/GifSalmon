@@ -1,0 +1,5 @@
+<div class="scrubber-frame">{{currentFrames}}s</div>
+<div class="scrubber-bar">
+    <input [disabled]="disabled" [value]="currentFrames" type="range" step="0.1" [(ngModel)]="currentFrames" min="0" [max]="params.max" (change)="sliderChange()" />
+</div>
+<div class="scrubber-frame">{{params.max+0.1}}s</div>
