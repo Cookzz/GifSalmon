@@ -7,10 +7,11 @@ import { ElectronService } from '../service/electron.service';
 import { Defaults } from './types/default.interface';
 import { FrameScrubber } from "./components/frame-scrubber/frame-scrubber.component";
 import { defaultValue } from './const/defaults';
+import { PixelPalette } from "./components/pixel-palette/palette.component";
 
 @Component({
   selector: 'app-root',
-  imports: [FileSizePipe, RatioPipe, NumberPipe, FormsModule, CommonModule, LoaderComponent, FrameScrubber],
+  imports: [FileSizePipe, RatioPipe, NumberPipe, FormsModule, CommonModule, LoaderComponent, FrameScrubber, PixelPalette],
   providers: [FrameratePipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -217,6 +218,20 @@ export class AppComponent {
   cancelExport(){
     this.status.export.canceling = true
     this.electron.send('cancel_export', { remove: this.status.export.path })
+  }
+
+  exportDone(){
+    this.status.state = 5
+    this.status.export = { progress: 0, size: 0, path: null, canceling: false }
+  }
+
+  reveal(){
+    this.electron.showItemInFolder(this.status.export.path)
+  }
+
+  preview(){
+    const path = this.electron.formatUrl(this.status.export.path)
+    window.open(path)
   }
   
   /* ngModel changes with no interactions with ipcRenderer or main.ts */
