@@ -52,12 +52,12 @@
           <h5>Dither Grid</h5>
           <div class="custom-select" [ngClass]="{'disabled': !settings.color.dither || status.state < 5}">
             <select [(ngModel)]="settings.color.dither_scale" (change)="refreshThumbnail()" [disabled]="!settings.color.dither || status.state<5">
-              <option ng-value="0">0</option>
-              <option ng-value="1">1</option>
-              <option ng-value="2">2</option>
-              <option ng-value="3">3</option>
-              <option ng-value="4">4</option>
-              <option ng-value="5">5</option>
+              <option [ngValue]="0">0</option>
+              <option [ngValue]="1">1</option>
+              <option [ngValue]="2">2</option>
+              <option [ngValue]="3">3</option>
+              <option [ngValue]="4">4</option>
+              <option [ngValue]="5">5</option>
             </select>
           </div>
         </div>
@@ -65,20 +65,11 @@
           <h5>Palette Mode</h5>
 
           <div class="custom-select" [ngClass]="{'disabled': status.state < 5}">
-            <select ng-change="refreshPalette()" [disabled]="status.state<5" [(ngModel)]="settings.color.stats_mode">
+            <select (change)="refreshPalette()" [disabled]="status.state<5" [(ngModel)]="settings.color.stats_mode">
               <option value="full">Full</option>
               <option value="diff">Frame Difference</option>
             </select>
           </div>
-
-          <!-- <div class="form-control">
-            <label>
-              <input type="radio" [(ngModel)]="settings.color.stats_mode" value="full" /> Full
-            </label>
-            <label>
-              <input type="radio" [(ngModel)]="settings.color.stats_mode" value="diff" /> Diff
-            </label>
-          </div> -->
         </div>
         <div class="form-group form-group-inline">
           <h5>Stats Mode</h5>
@@ -93,24 +84,22 @@
 
 
 
-        <!-- <h3 class="section-title">Color Palette</h3>
+        <h3 class="section-title">Color Palette</h3>
         <div class="form-group">
           <h5>Colors</h5>
           <div class="form-control">
             <div class="custom-range">
-              <div class="custom-range-value"><input type="number" [disabled]="status.state<5" min="16" max="256" ng-blur="refreshPalette()" [(ngModel)]="color_value" /></div>
+              <div class="custom-range-value"><input type="number" [disabled]="status.state<5" min="16" max="256" (blur)="refreshPalette()" [(ngModel)]="color_value" /></div>
               <div class="custom-range-input">
-                <input type="range" min="16" step="2" max="256" [disabled]="status.state<5" ng-mouseup="refreshPalette()" [(ngModel)]="settings.color.count" />
+                <input type="range" min="16" step="2" max="256" [disabled]="status.state<5" (mouseup)="refreshPalette()" [(ngModel)]="settings.color.count" />
               </div>
             </div>
           </div>
           <div class="form-control palette-control">
-            <div pixel-palette [(ngModel)]="palette" data-max-colors="settings.color.count"></div>
+            <!-- <div pixel-palette [(ngModel)]="palette" data-max-colors="settings.color.count"></div> -->
+             <pixel-palette [palette]="palette" [maxColors]="settings.color.count" />
           </div>
-        </div> -->
-
-        <!-- <pre>{{frames|json}}</pre>
-        <pre>{{settings|json}}</pre> -->
+        </div>
       </div>
 
 
@@ -144,9 +133,9 @@
                   <a class="btn" href (click)="cancelExport()">Cancel</a>
                 </div>
                 <div [hidden]="status.export.progress !== 100">
-                  <a class="btn" href ng-click="reveal()">Show in folder</a>
-                  <a class="btn" href ng-click="preview()">Preview</a>
-                  <a class="btn btn-primary" href ng-click="exportDone()">Done</a>
+                  <a class="btn" href (click)="reveal()">Show in folder</a>
+                  <a class="btn" href (click)="preview()">Preview</a>
+                  <a class="btn btn-primary" href (click)="exportDone()">Done</a>
                 </div>
               </div>
             </div>
@@ -168,7 +157,7 @@
                     <h4>Generating Color Palette</h4>
                     <p>This could take a while for longer gifs...</p>
                     <hr />
-                    <p><a ng-click="cancel(true)" class="btn">Cancel</a></p>
+                    <p><a (click)="cancel(true)" class="btn">Cancel</a></p>
                   </div>
                 }
                 @else if (status.state === 3) {
