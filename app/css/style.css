@@ -279,7 +279,7 @@ input[type="number"]:disabled {
   font-size: 12px;
   outline: none;
   -webkit-appearance:none;
-  background-color: transparent;
+  background-color: #333;
   min-width: 40px;
   padding: 5px 25px 5px 5px;
   border: 0;
