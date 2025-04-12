@@ -1,13 +1,23 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from "@angular/core";
+import { 
+    Component, 
+    EventEmitter, 
+    Input, 
+    OnChanges, 
+    Output, 
+    SimpleChanges, 
+    ViewChild, 
+    ElementRef,
+    Renderer2
+} from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
+import { ColorPickerModule } from 'primeng/colorpicker';
 
-/* A very simple slider without dependency on third party components */
 @Component({
     selector: "pixel-palette",
     templateUrl: './palette.component.html',
-    styleUrl: '../../css/style.css',
-    imports: [FormsModule, CommonModule]
+    styleUrl: './palette.component.css',
+    imports: [FormsModule, CommonModule, ColorPickerModule]
 })
 
 export class PixelPalette implements OnChanges {
@@ -23,9 +33,13 @@ export class PixelPalette implements OnChanges {
     pixels: any[] = []
     pixelIndex: any = null;
     hexValue: any = null
+    stored: any = null
+    startedIn: boolean = false
+    rgb: any = {}
 
-    picker: any = $().find('.pixel-picker')
-    mini: any = $().find('input.pixel-mini-colors')
+    @ViewChild("pixelpicker", { read: ElementRef }) picker?: ElementRef;
+
+    constructor(private renderer: Renderer2){}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.['palette'] && (changes?.['palette']?.currentValue !== changes?.['palette']?.previousValue)){
@@ -36,17 +50,22 @@ export class PixelPalette implements OnChanges {
     pickMe(i: number, e: MouseEvent){
         e.preventDefault();
         e.stopPropagation();
-        
+
         const color = this.pixels[i];
-        this.mini.minicolors('value', `rgb(${color.join(',')})`);
-        // scope.stored = color;
+        this.rgb = this.rgb_to_obj(color[0], color[1], color[2])
+        this.stored = color;
         this.pixelIndex = i;
         this.hexValue = this.rgb_to_hex(color[0], color[1], color[2]);
 
         if (e.target){
             const p = $(e.target).offset()
+            const top = p?.top ?? 0
+            const left = p?.left ?? 0
+
+            this.renderer.setStyle(this.picker?.nativeElement, 'top', `${top}px`)
+            this.renderer.setStyle(this.picker?.nativeElement, 'left', `${left}px`)
+            this.renderer.addClass(this.picker?.nativeElement, 'open')
         }
-        // $picker.css('top',p.top+'px').css('left',p.left+'px').addClass('open');
     }
 
     put_palette(){
@@ -77,13 +96,6 @@ export class PixelPalette implements OnChanges {
                 this.palette = uri;
             }
         }
-    }
-
-    rgb_to_hex(r: number, g: number, b: number){
-        let bin = r << 16 | g << 8 | b;
-        return ((h) => {
-          return new Array(7-h.length).join("0")+h
-        })(bin.toString(16).toUpperCase())
     }
 
     read_palette(img_src: any){
@@ -120,5 +132,45 @@ export class PixelPalette implements OnChanges {
         return {
             'background-color': `rgb(${c[0]},${c[1]},${c[2]})`
         }
+    }
+
+    /* picker-actions functions */
+    set(){
+        this.renderer.removeClass(this.picker?.nativeElement, 'open')
+        this.pixels[this.pixelIndex] = [this.rgb.r, this.rgb.g, this.rgb.b];
+        this.pixelIndex = null;
+        this.put_palette();
+        this.rgb = {};
+    }
+
+    close(){
+        this.renderer.removeClass(this.picker?.nativeElement, 'open')
+        this.pixelIndex = null
+        this.rgb = {}
+    }
+
+    /* pixel-picker function */
+    stopPropogation(e: MouseEvent){
+        e.stopPropagation()
+    }
+
+    start(){
+        this.startedIn = true
+    }
+
+    onColorPickerChanged(){
+        this.hexValue = this.rgb_to_hex(this.rgb.r, this.rgb.g, this.rgb.b)
+    }
+
+    /* RGB conversion */
+    rgb_to_hex(r: number, g: number, b: number){
+        let bin = r << 16 | g << 8 | b;
+        return ((h) => {
+          return new Array(7-h.length).join("0")+h
+        })(bin.toString(16).toUpperCase())
+    }
+
+    rgb_to_obj(r: number, g: number, b: number){
+        return { r, g, b }
     }
 }

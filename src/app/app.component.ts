@@ -233,6 +233,9 @@ export class AppComponent {
     const path = this.electron.formatUrl(this.status.export.path)
     window.open(path)
   }
+
+  /* Independently update scope */
+  
   
   /* ngModel changes with no interactions with ipcRenderer or main.ts */
   /* Main functionality (these are generally imported from renderer.js) */

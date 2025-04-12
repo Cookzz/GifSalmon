@@ -1,0 +1,68 @@
+.pixel-picker {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    z-index: 999;
+    background: #2a2a2a;
+    padding: 20px;
+    margin-top: -281px;
+    margin-left: -6px;
+}
+.pixel-picker:after {
+    position: absolute;
+    content:'';
+    bottom: -19px;
+    left: 0px;
+    border-top: 20px solid #2a2a2a;
+    border-right: 20px solid transparent;
+    border-left: 20px solid transparent;
+}
+.pixel-picker.open {
+    display: block;
+}
+.pixel-picker .hex-control {
+    display: flex;
+    padding: 5px 0;
+    flex-direction: row;
+}
+.pixel-picker .hex-control .hex-input-wrapper {
+    flex: 0;
+}
+.pixel-picker .hex-control .color-preview {
+    flex: 1;
+    height: 24px;
+    display: block;
+}
+.pixel-picker .hex-control input {
+    width: 50px;
+    font-family: monospace;
+    font-size: 12px;
+    text-align: center;
+}
+.pixel-picker .picker-actions {
+    padding: 0 0 10px 0px;
+}
+.pixel-picker .picker-control {
+    display: block;
+    clear: both;
+}
+.pixel-palette {
+    width: 100%;
+    display: block;
+    position: relative;
+}
+.pixel-palette .pixel {
+    width: 17.5px;
+    height: 17.5px;
+    float: left;
+    border-width: 0px;
+}
+.pixel-palette .pixel:hover,
+.pixel-palette .pixel.on {
+    /* box-shadow: 1px 1px 5px #000; */
+    transform: scale(1.5);
+}
+.p-colorpicker-panel  {
+    background-color: #2a2a2a;
+}

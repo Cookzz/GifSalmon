@@ -1,24 +1,23 @@
 <div class="pixel-palette">
   <div class="pixel-pixels">
-    <!-- <a ng-click="pickMe($index,$event)" ng-repeat="p in pixels track by $index" class="pixel" ng-style="$color(p)" ng-class={"on":pixelIndex==$index}></a> -->
-      @for (p of pixels; track $index) {
-        <a (click)="pickMe($index,$event)" class="pixel" [ngStyle]="color(p)" [ngClass]="{'on': pixelIndex === $index}"></a>
-      }
+    @for (p of pixels; track $index) {
+      <a (click)="pickMe($index,$event)" class="pixel" [ngStyle]="color(p)" [ngClass]="{'on': pixelIndex === $index}"></a>
+    }
   </div>
-  <!-- <div class="pixel-picker">
-    <div class="picker-actions">
-      <a class="btn btn-small" ng-click="$close()">Cancel</a>
-      <a class="btn btn-small btn-primary"  ng-click="$set()">Ok</a>
+  <div class="pixel-picker" #pixelpicker (click)="stopPropogation($event)" (mousedown)="start()">
+    <div class="picker-actions" #pickeraction>
+      <a class="btn btn-small" (click)="close()">Cancel</a>
+      <a class="btn btn-small btn-primary"  (click)="set()">Ok</a>
     </div>
 
     <div class="hex-control">
-      <div class="color-preview" ng-style="{'background-color':'#'+hexValue}"></div>
+      <div class="color-preview" [ngStyle]="{'background-color':'#'+hexValue}"></div>
       <div class="hex-input-wrapper">
         <input type="text" class="hex-input" [(ngModel)]="hexValue" maxlength="6" />
       </div>
     </div>
     <div class="picker-control">
-      <input type="text" class="pixel-mini-colors" />
+      <p-colorpicker [(ngModel)]="rgb" format="rgb" [inline]="true" (onChange)="onColorPickerChanged()" />
     </div>
-  </div> -->
+  </div>
 </div>

@@ -33,8 +33,7 @@
             "styles": [
               "src/styles.css",
               "./src/app/css/slider.css", 
-              "./src/app/css/style.css",
-              "node_modules/@claviska/jquery-minicolors/jquery.minicolors.css"
+              "./src/app/css/style.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.slim.js"
@@ -97,8 +96,7 @@
               "src/styles.css"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.slim.js",
-              "node_modules/@claviska/jquery-minicolors/jquery.minicolors.js"
+              "node_modules/jquery/dist/jquery.slim.js"
             ]
           }
         }
