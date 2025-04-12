@@ -3,6 +3,8 @@ A gif tuning application for Mac, Windows and Linux.
 ![Imgur](https://i.imgur.com/1dZGjtM.png)
 An updated version of [GifTuna](https://github.com/dudewheresmycode/GifTuna) for 2025.
 
+**Note:** For those interested in v2 development, do check out the [v2-alpha branch](https://github.com/Cookzz/GifSalmon/tree/v2-alpha). Most of my development will be focused on here to prepare v2 but v1 won't be completely abandoned because of this as I plan to maintain both major versions.
+
 ## What has changed
 
 * Updated to the latest electron version & packager
