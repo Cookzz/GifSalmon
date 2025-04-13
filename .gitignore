@@ -43,5 +43,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-preload.js
-main.js
+/preload.js
+/main.js
+/build
