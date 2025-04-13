@@ -62,6 +62,7 @@ export class PixelPalette implements OnChanges {
             const top = p?.top ?? 0
             const left = p?.left ?? 0
 
+            this.renderer.appendChild(document.body, this.picker?.nativeElement)
             this.renderer.setStyle(this.picker?.nativeElement, 'top', `${top}px`)
             this.renderer.setStyle(this.picker?.nativeElement, 'left', `${left}px`)
             this.renderer.addClass(this.picker?.nativeElement, 'open')
