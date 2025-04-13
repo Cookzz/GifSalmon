@@ -31,6 +31,12 @@ An updated version of [GifTuna](https://github.com/dudewheresmycode/GifTuna) for
 * Maintaining and cleaning up current codebase but will not do any drastic changes in preparation for version 2.0.0
 * Fix bugs if there is any found
 
+## Tested Platforms
+
+- [x] Windows 11 24H2
+- [ ] Linux
+- [ ] MacOS
+
 ## Compression
 
 Done my fair share of research but ffmpeg alone will not be able to properly reduce the size of the gif if you're using its default settings and would require even more external dependencies like [gifsicle](https://github.com/imagemin/gifsicle-bin) or [gifski](https://github.com/ImageOptim/gifski) but because of how it will require multiple pipes/stream from ffmpeg -> export as .gif first -> pipe it into gifsicle or ffmpeg -> generate frames -> stream it into gifski, adding compression to reduce the gif's file size is a lot more harder than I expected without compromising the current UI/UX.
