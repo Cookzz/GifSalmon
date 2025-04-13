@@ -8,12 +8,14 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "tsc main.ts && tsc preload.ts && ng build --base-href ./",
     "watch": "ng build --watch --configuration development",
-    "electron-tsc": "tsc main.ts && tsc preload.ts && ng build --base-href ./ && electron .",
+    "electron-tsc": "npm run build && electron .",
     "electron": "ng build --base-href ./ && electron .",
-    "build_win": "tsc main.ts && tsc preload.ts && ng build --base-href ./ && npx @electron/packager . GifSalmon --ignore=/main.ts --ignore=/preload.ts --ignore=/.angular --ignore=/.vscode --ignore=/resources --ignore=/src/app --ignore=/src/service --ignore=/src/index.html --ignore=/src/main.ts --ignore=/src/styles.css --platform=win32 --icon=./resources/logo-hires-v2.iconset --out=./build/win/ --overwrite",
-    "test": "ng test"
+    "build_win": "npm run build && npx @electron/packager . GifSalmon --ignore=/main.ts --ignore=/preload.ts --ignore=/.angular --ignore=/.vscode --ignore=/resources --ignore=/src/app --ignore=/src/service --ignore=/src/index.html --ignore=/src/main.ts --ignore=/src/styles.css --platform=win32 --icon=./resources/logo-hires-v2.iconset --out=./build/win/ --overwrite",
+    "build_linux": "npm run build && npx @electron/packager . GifSalmon --ignore=/main.ts --ignore=/preload.ts --ignore=/.angular --ignore=/.vscode --ignore=/resources --ignore=/src/app --ignore=/src/service --ignore=/src/index.html --ignore=/src/main.ts --ignore=/src/styles.css --platform=linux --icon=./resources/logo-hires-v2-256x256@2x.png --out=./build/linux/ --overwrite",
+    "build_mac": "npm run build && npx @electron/packager . GifSalmon --ignore=/main.ts --ignore=/preload.ts --ignore=/.angular --ignore=/.vscode --ignore=/resources --ignore=/src/app --ignore=/src/service --ignore=/src/index.html --ignore=/src/main.ts --ignore=/src/styles.css --platform=darwin --icon=./resources/logo-hires-v2.icns --out=./build/mac/ --overwrite",
+    "build_all": "npm run build_mac && npm run build_win && npm run build_linux"
   },
   "private": true,
   "dependencies": {
