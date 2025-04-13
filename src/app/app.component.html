@@ -14,6 +14,11 @@
             @if (!settings.file.input) {
               <a class="btn" (click)="fileUpload.click()">Select File</a>
             }
+            @if (settings.file.input) {
+              <a [ngClass]="{ 'disabled': status.state > 0 && status.state < 5 }" class="input" (click)="fileUpload.click()">
+                {{settings.file.input.name}}<span class="change-it">Change</span>
+              </a>
+            }
           </div>
         </div>
 
