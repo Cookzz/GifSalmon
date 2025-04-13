@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'framerate',
 })
 export class FrameratePipe implements PipeTransform {
-  transform(input: any, suffix: boolean): string | number {
+  transform(input: any, suffix: boolean): any {
     if(!input){
         return '-';
     }
