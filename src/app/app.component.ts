@@ -82,7 +82,7 @@ export class AppComponent {
       this.settings.dimensions.original_height = videoStream.height
       this.settings.dimensions.ratio = videoStream.width/videoStream.height
 
-      this.settings.fps = Number(this.frameratePipe.transform((videoStream.r_frame_rate || videoStream.avg_frame_rate), true))
+      this.settings.fps = parseInt(this.frameratePipe.transform((videoStream?.r_frame_rate ?? videoStream.avg_frame_rate), true))
 
       //get thumbnail
       this.refreshPalette();
