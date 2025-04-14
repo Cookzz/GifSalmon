@@ -194,3 +194,114 @@ ipcMain.on('getThumbnail', (event, input, palette, time, settings) => {
   //   event.sender.send('thumbnailResult', new Buffer(se, 'binary').toString('base64'));
   // });
 });
+
+/* Export */
+let exportCancelled = false
+ipcMain.on('exportGif', (event, input, output, palette, settings) => {
+  const stats = settings.color.stats_mode || 'full';
+  const dither = settings.color.dither ? ('bayer:bayer_scale='+settings.color.dither_scale) : 'none';
+  const colors = settings.color.colors || 256;
+  const fps = settings.fps || 10;
+  const w = settings.dimensions.width || 320;
+  const h = settings.dimensions.height || 240;
+  const scaleCmd = "scale="+w+":"+h;
+  const vf = util.format("fps=%s,%s:flags=lanczos [x];[x][1:v]paletteuse=dither=%s", fps, scaleCmd, dither);
+
+  // var filters = util.format("fps=%s,%s:flags=lanczos[x];[x][1:v]paletteuse=dither=%s", fps, scaleCmd, dither);
+  if(ffmpeg_ps) ffmpeg_ps.kill();
+
+  ffmpeg_ps = spawn(ffmpeg_path, [
+      "-i", input,
+      "-i", "pipe:0",
+      "-lavfi", vf,
+      "-an",
+      "-f", "gif",
+      output
+  ])
+
+  ffmpeg_ps.stderr.on('data', (d) => {
+      // var time = /time=(\d+)\:(\d+)\:(\d+)\.(\d+)\s+/.exec(d.toString());
+      const progress = parseProgressLine(d.toString());
+      console.log(progress);
+      // if(time && time.length >= 5){
+      if(progress && progress.time){
+          // var time = (parseInt(time[1])*3600) + (parseInt(time[2])*60) + parseFloat(time[3] + "." + time[4]);
+          // var sec = timemarkToSeconds(progress.time);
+          // var size = parseInt(progress.size.replace('kB',''))*1000;
+
+          const progress_obj = {
+              sec: timemarkToSeconds(progress.time),
+              size: progress.size ? parseInt(progress.size.replace('kB',''))*1000 : 0
+          }
+          event.sender.send('export_progress', progress_obj);
+      }
+  });
+  ffmpeg_ps.on('close', () => {
+  // event.sender.send('thumbnailResult', Buffer.concat(data).toString('base64'));
+      console.log('done');
+      if (exportCancelled) {
+          exportCancelled = false;
+          event.sender.send('export_canceled', {});
+      } else {
+          event.sender.send('export_finished', getFilesizeInBytes(output));
+      }
+  });
+
+  ffmpeg_ps.stdin.write(Buffer.from(palette, 'base64'));
+  ffmpeg_ps.stdin.end();
+});
+
+/* Misc functions */
+const timemarkToSeconds = (timemark: string | number) => {
+  if (typeof timemark === 'number') {
+      return timemark;
+  }
+
+  if (timemark.indexOf(':') === -1 && timemark.indexOf('.') >= 0) {
+      return Number(timemark);
+  }
+
+  const parts = timemark.split(':');
+
+  // add seconds
+  let secs = Number(parts.pop());
+
+  if (parts.length) {
+      // add minutes
+      secs += Number(parts.pop()) * 60;
+  }
+
+  if (parts.length) {
+      // add hours
+      secs += Number(parts.pop()) * 3600;
+  }
+
+  return secs;
+}
+
+const parseProgressLine = (line: string) => {
+  let progress: any = {};
+
+  // Remove all spaces after = and trim
+  line = line.replace(/=\s+/g, '=').trim();
+  const progressParts = line.split(' ');
+
+  // Split every progress part by "=" to get key and value
+  progressParts.forEach((part: any) => {
+      const progressSplit = part.split('=', 2);
+      const key = progressSplit[0];
+      const value = progressSplit[1];
+
+      // This is not a progress line
+      if(typeof value === 'undefined') return null;
+
+      progress[key] = value;
+  })
+
+  return progress;
+}
+const getFilesizeInBytes = (filename: any) => {
+  const stats = statSync(filename)
+  const fileSizeInBytes = stats.size
+  return fileSizeInBytes
+}

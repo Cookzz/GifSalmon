@@ -60,6 +60,9 @@ export class AppComponent {
     this.electron.on('probeResult', this.getProbeResult.bind(this))
     this.electron.on('paletteResult', this.getPaletteResult.bind(this))
     this.electron.on('thumbnailResult', this.getThumbnailResult.bind(this))
+    this.electron.on('export_progress', this.exportProgress.bind(this))
+    this.electron.on('export_finished', this.exportFinished.bind(this))
+    this.electron.on('export_canceled', this.exportCancelled.bind(this))
   }
 
   /* Listener function here */
@@ -106,6 +109,32 @@ export class AppComponent {
       this.thumbnail = `data:image/gif;base64,${thumbnailResult}`
       this.status.state = 5
       this.stored = this.settings
+    })
+  }
+
+  exportProgress(event: any, progress: any){
+    console.log("Progress", progress);
+    const p = (progress.sec/this.settings.probe.duration)*100;
+
+    this.zone.run(()=>{
+      this.status.export.progress = p;
+      this.status.export.size = progress.size;
+    })
+  }
+
+  exportFinished(event: any, size: any){
+    console.log("DONE!");
+
+    this.zone.run(()=>{
+      this.status.export.progress = 100;
+      this.status.export.size = size;
+    })
+  }
+
+  exportCancelled(){
+    this.zone.run(()=>{
+      this.status.export.canceling = false;
+      this.exportDone();
     })
   }
   /* Listener function here */
