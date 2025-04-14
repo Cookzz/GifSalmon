@@ -19,6 +19,8 @@ Everything here including README is subject to change
 * Support for additional compression with either [gifsicle](https://github.com/imagemin/gifsicle-bin) or [gifski](https://github.com/ImageOptim/gifski)
 * Support for multiple animated image formats: [.apng](https://en.wikipedia.org/wiki/APNG), [.webp](https://en.wikipedia.org/wiki/WebP) and [.avif](https://en.wikipedia.org/wiki/AVIF) aside from .gif
 * Gif trimming - export gif from X to Y seconds
+* Reduce or if possible, remove dependency from JQuery and use angular's provided modules for DOM manipulation
+* Switch to Tauri
 
 ## Tested Platforms
 
