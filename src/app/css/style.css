@@ -474,9 +474,7 @@ h6 {
 .progress-action a {
   margin-right: 10px;
 }
-.progress-action a.btn {
-  margin-right: 0;
-}
+
 .progress-text-percent {
   font-weight: bold;
   display: inline-block;
