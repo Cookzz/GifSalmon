@@ -196,6 +196,10 @@ ipcMain.on('getThumbnail', (event, input, palette, time, settings) => {
   // });
 });
 
+ipcMain.on('cancelProcess', () => {
+  if(ffmpeg_ps){ ffmpeg_ps.kill(); }
+});
+
 /* Export */
 let exportCancelled = false
 ipcMain.on('exportGif', (event, input, output, palette, settings) => {
@@ -221,15 +225,9 @@ ipcMain.on('exportGif', (event, input, output, palette, settings) => {
   ])
 
   ffmpeg_ps.stderr.on('data', (d) => {
-      // var time = /time=(\d+)\:(\d+)\:(\d+)\.(\d+)\s+/.exec(d.toString());
       const progress = parseProgressLine(d.toString());
       console.log(progress);
-      // if(time && time.length >= 5){
       if(progress && progress.time){
-          // var time = (parseInt(time[1])*3600) + (parseInt(time[2])*60) + parseFloat(time[3] + "." + time[4]);
-          // var sec = timemarkToSeconds(progress.time);
-          // var size = parseInt(progress.size.replace('kB',''))*1000;
-
           const progress_obj = {
               sec: timemarkToSeconds(progress.time),
               size: progress.size ? parseInt(progress.size.replace('kB',''))*1000 : 0
@@ -238,7 +236,6 @@ ipcMain.on('exportGif', (event, input, output, palette, settings) => {
       }
   });
   ffmpeg_ps.on('close', () => {
-  // event.sender.send('thumbnailResult', Buffer.concat(data).toString('base64'));
       console.log('done');
       if (exportCancelled) {
           exportCancelled = false;
@@ -250,6 +247,16 @@ ipcMain.on('exportGif', (event, input, output, palette, settings) => {
 
   ffmpeg_ps.stdin.write(Buffer.from(palette, 'base64'));
   ffmpeg_ps.stdin.end();
+});
+
+ipcMain.on('cancel_export', (event, opts) => {
+  exportCancelled = true;
+  if(ffmpeg_ps){ ffmpeg_ps.kill(); }
+  if(opts.remove){
+      //remove the partially exported file
+      console.log("REMOVE", opts.remove);
+      unlinkSync(opts.remove);
+  }
 });
 
 /* Misc functions */
