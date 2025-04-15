@@ -8,11 +8,12 @@ No alpha releases/binaries will be provided until migration is completed.
 
 Everything here including README is subject to change
 
-## Progress
+## Changes
 
-* Latest version of electron & dependencies as of April 2025
-* Migrating to [Angular](https://angular.dev/) from [AngularJS](https://angularjs.org/)
-* Fixing breaking changes & keeping as much of the original functionality during migration
+* Latest version of electron & dependencies
+* Migrated to [Angular](https://angular.dev/) from [AngularJS](https://angularjs.org/)
+
+Refer to CHANGELOG for additional details.
 
 ## Plans
 
@@ -20,7 +21,8 @@ Everything here including README is subject to change
 * Support for multiple animated image formats: [.apng](https://en.wikipedia.org/wiki/APNG), [.webp](https://en.wikipedia.org/wiki/WebP) and [.avif](https://en.wikipedia.org/wiki/AVIF) aside from .gif
 * Gif trimming - export gif from X to Y seconds
 * Reduce or if possible, remove dependency from JQuery and use angular's provided modules for DOM manipulation
-* Switch to Tauri
+* Auto-download of ffmpeg instead of prompting user to do it instead
+* Switch to Tauri (Plan: approx. June - July 2025)
 
 ## Tested Platforms
 
