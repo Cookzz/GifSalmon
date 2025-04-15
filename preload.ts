@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer, webUtils, shell } from 'electron';
+import { contextBridge, ipcRenderer, webUtils, shell, app } from 'electron';
 import { parse, join } from 'path'
 import { format } from 'url'
 
@@ -24,6 +24,7 @@ contextBridge.exposeInMainWorld('electron', {
     getPathForFile: (file: any) => webUtils.getPathForFile(file),
     showItemInFolder: (path: string) => shell.showItemInFolder(path),
     openExternal: (str: string) => shell.openExternal(str),
+    quit: () => app.quit(),
     formatPath: formatPath,
     formatUrl: formatUrl
 });

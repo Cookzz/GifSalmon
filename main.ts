@@ -17,6 +17,7 @@ import * as util from 'node:util'
 const { Low } = require('lowdb')
 const { JSONFile } = require('lowdb/node')
 const { sync } = require('which')
+const { detectPlatform, downloadFiles } = require('ffbinaries');
 
 fixPath()
 const settingsPath = join(app.getPath('userData'),'app_db.json');
@@ -51,7 +52,8 @@ const createWindow = (needs_ffmpeg?: boolean) => {
       pathname: join(__dirname, "/dist/browser/index.html"),
       protocol: "file:",
       slashes: true,
-      hash: (needs_ffmpeg ? '/download' : null)
+      // hash: (needs_ffmpeg ? '/download' : null)
+      hash: "/download"
     })
   );
   // The following is optional and will open the DevTools:
@@ -103,6 +105,33 @@ app.on('activate', function () {
         createWindow()
     }
 })
+
+/* Install FFMPEG */
+ipcMain.on('install_ffmpeg', (event, input) => {
+  console.log("INSTALL");
+  let platform = detectPlatform();
+  let dest = join(app.getPath("userData"), "ffmpeg");
+
+  downloadFiles(['ffmpeg','ffprobe'], {quiet: true, destination: dest}, () => {
+      console.log('Downloaded binaries for ' + platform + '.');
+      ffmpeg_path = `${dest}/ffmpeg`
+      ffprobe_path = `${dest}/ffprobe`
+
+      db.update(({ ffmpeg }: any) => ffmpeg = Object.assign({}, ffmpeg, { ffmpeg: { ffmpeg: ffmpeg_path, ffprobe: ffprobe_path } }))
+
+      if (win){
+        win.loadURL(
+          url.format({
+            pathname: join(__dirname, "/dist/browser/index.html"),
+            protocol: "file:",
+            slashes: true
+          })
+        );
+      } else {
+        createWindow(!ffmpeg_path || !ffprobe_path)
+      }
+  });
+});
 
 /* Invoke Handler */
 ipcMain.handle('save-dialog', async (event, path) => {

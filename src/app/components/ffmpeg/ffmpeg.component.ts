@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { Component, NgZone } from "@angular/core";
 import { LoaderComponent } from "../loader/loader.component";
+import { ElectronService } from '../../../service/electron.service';
 
 /* A very simple slider without dependency on third party components */
 @Component({
@@ -13,15 +13,28 @@ import { LoaderComponent } from "../loader/loader.component";
 export class FfmpegComponent {
     installing: boolean = false
 
-    ffmpeg_click(){
+    electron = new ElectronService().getElectron()
 
+    constructor(private zone: NgZone){
+        this.electron.on('ffmpeg_installed', this.installedFfmpeg.bind(this))
     }
 
-    quit(){
+    installedFfmpeg(){
+        this.zone.run(()=>{
+            this.installing = false
+        })
+    }
 
+    ffmpeg_click(){
+        this.electron.openExternal("https://ffmpeg.org")
     }
 
     install(){
-        
+        this.installing = true
+        this.electron.send("install_ffmpeg", {})
+    }
+
+    quit(){
+        this.electron.quit()
     }
 }
