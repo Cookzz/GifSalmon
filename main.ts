@@ -50,7 +50,8 @@ const createWindow = (needs_ffmpeg?: boolean) => {
     url.format({
       pathname: join(__dirname, "/dist/browser/index.html"),
       protocol: "file:",
-      slashes: true
+      slashes: true,
+      hash: (needs_ffmpeg ? '/download' : null)
     })
   );
   // The following is optional and will open the DevTools:

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>GifSalmon</title>
+    </head>
+    <body>
+        <div class="install">
+            <h3>Download &amp; Install FFmpeg</h3>
+            <p>
+              GifSalmon uses <a (click)="ffmpeg_click()" href>ffmpeg</a> under the hood to convert to gif format. Don't fret, we can download this libary for you.
+            </p>
+            <p>&nbsp;</p>
+            <div>
+                @if (!installing) {
+                    <p>
+                        <a (click)="quit()" class="btn">Quit</a>
+                        <a (click)="install()" class="btn btn-primary">Download &amp; Install</a>
+                    </p>
+                }
+              
+            </div>
+            <div>
+                @if (installing) {
+                    <p>
+                        <app-loader /> Installing ffmpeg...
+                    </p>
+                }
+            </div>
+        </div>
+    </body>
+</html>

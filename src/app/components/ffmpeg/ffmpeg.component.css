@@ -1,0 +1,12 @@
+.install {
+    width: 80%;
+    max-width: 800px;
+    margin: 80px auto;
+    background: #111;
+    padding: 30px;
+}
+  
+.install p {
+    font-size: 14px;
+    line-height: 1.5;
+}
