@@ -1,6 +1,6 @@
 {
   "name": "gif-salmon",
-  "version": "2.0.0-prealpha",
+  "version": "2.0.0-alpha",
   "description": "A modern cross-platform video to gif converter",
   "main": "main.js",
   "author": "Cookzz",
