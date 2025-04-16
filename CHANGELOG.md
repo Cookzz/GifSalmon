@@ -5,12 +5,13 @@ Subject to change. Some are also missing commit ids because some changes are too
 * Migrated to [Angular](https://angular.dev/) from [AngularJS](https://angularjs.org/)
     - Deprecated renderer.js to Angular Components
     - Moved to TypeScript with a mix of `import` and `require(..)`
+    - `$scope.<variable>` -> `this.<variable>` (this is the result of moving to components)
     - `ng-click` -> `(click)`
     - `ng-mouseup` -> `(mouseup)`
     - `ng-blur` -> `(blur)`
     - `ng-model` -> `[(ngModel)]` (this also replaces `$scope.watch(..)`)
     - `ng-if` -> `@if (value) else { <element> }`
-    - `app.directive(..)` -> [components](https://github.com/Cookzz/GifSalmon/tree/v2-alpha/src/app/components)
+    - `app.directive(..)` & `app.controller(..)` -> [components](https://github.com/Cookzz/GifSalmon/tree/v2-alpha/src/app/components)
     - `app.filter(..)` -> [pipes](https://github.com/Cookzz/GifSalmon/tree/v2-alpha/src/app/pipes)
     - All electron functions as `ipcRenderer.on(..)` are moved to [preload.ts](https://github.com/Cookzz/GifSalmon/blob/v2-alpha/preload.ts), received in [electron.service.ts](https://github.com/Cookzz/GifSalmon/blob/v2-alpha/src/service/electron.service.ts) to be used
 

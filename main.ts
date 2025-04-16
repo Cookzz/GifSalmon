@@ -52,8 +52,7 @@ const createWindow = (needs_ffmpeg?: boolean) => {
       pathname: join(__dirname, "/dist/browser/index.html"),
       protocol: "file:",
       slashes: true,
-      // hash: (needs_ffmpeg ? '/download' : null)
-      hash: "/download"
+      hash: (needs_ffmpeg ? '/download' : null)
     })
   );
   // The following is optional and will open the DevTools:
