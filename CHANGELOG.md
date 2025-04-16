@@ -1,3 +1,28 @@
+## 2.0.0-alpha (2025-04-16)
+Subject to change. Some are also missing commit ids because some changes are too scattered or are combined together.
+
+**_Major changes_**
+* Migrated to [Angular](https://angular.dev/) from [AngularJS](https://angularjs.org/)
+    - Deprecated renderer.js to Angular Components
+    - Moved to TypeScript with a mix of `import` and `require(..)`
+    - `ng-click` -> `(click)`
+    - `ng-mouseup` -> `(mouseup)`
+    - `ng-blur` -> `(blur)`
+    - `ng-model` -> `[(ngModel)]` (this also replaces `$scope.watch(..)`)
+    - `ng-if` -> `@if (value) else { <element> }`
+    - `app.directive(..)` -> [components](https://github.com/Cookzz/GifSalmon/tree/v2-alpha/src/app/components)
+    - `app.filter(..)` -> [pipes](https://github.com/Cookzz/GifSalmon/tree/v2-alpha/src/app/pipes)
+    - All electron functions as `ipcRenderer.on(..)` are moved to [preload.ts](https://github.com/Cookzz/GifSalmon/blob/v2-alpha/preload.ts), received in [electron.service.ts](https://github.com/Cookzz/GifSalmon/blob/v2-alpha/src/service/electron.service.ts) to be used
+
+* Deprecated [jquery-minicolors](https://github.com/claviska/jquery-miniColors/) for [primeng](https://github.com/primefaces/primeng) ([b742e52](https://github.com/Cookzz/GifSalmon/commit/b742e5218711639d1ea9f7e775e5e5cc68f184de))
+* Changed to page routing to redirect users if they have ffmpeg installed or not ([f2d66d3](https://github.com/Cookzz/GifSalmon/commit/f2d66d3458b2811a981709af0cea208d032927fc))
+
+**_Misc changes_**
+* feature: have palette color picker move with scroll event ([2a04eac](https://github.com/Cookzz/GifSalmon/commit/2a04eacb2bfe5e8df2bfa688ba26ced0eebf5e53))
+* fix: palette color picker not on top ([8e26290](https://github.com/Cookzz/GifSalmon/commit/8e262909f059ec05da4d94a64e8689d37ea8d14e))
+
+There are a lot of commits and changes but these are the most notable ones to highlight.
+
 ## 1.0.9 (2025-03-29)
 
 * upgrade electron to 35.1.2 & fix breaking changes ([ebf1082](https://github.com/Cookzz/GifSalmon/commit/ebf1082619eeee7527f61802cc4cbc50cd5b7533))
