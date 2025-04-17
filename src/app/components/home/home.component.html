@@ -32,10 +32,11 @@
           </div>
         </div>
 
-        <div class="form-group form-group-inline">
+        <div class="form-group">
           <h5>Lock Aspect</h5>
-          <div class="form-control">
-            <label><input type="checkbox" [disabled]="status.state<5" [(ngModel)]="settings.dimensions.lock" /> {{settings.dimensions.ratio|ratio}}</label>
+          <div class="form-group-inline">
+            <input class="label-checkbox" type="checkbox" [disabled]="status.state<5" [(ngModel)]="settings.dimensions.lock" />
+            <span>{{settings.dimensions.ratio|ratio}}</span>
           </div>
         </div>
         <div class="form-group">
@@ -49,8 +50,9 @@
         <h3 class="section-title">Dither Options</h3>
         <div class="form-group form-group-inline">
           <h5>Dither</h5>
-          <div class="form-control">
-            <label><input type="checkbox" [disabled]="status.state<5" [(ngModel)]="settings.color.dither" (change)="refreshThumbnail()" /> {{settings.color.dither?'Yes':'No'}}</label>
+          <div class="form-group-inline">
+            <input class="label-checkbox" type="checkbox" [disabled]="status.state<5" [(ngModel)]="settings.color.dither" (change)="refreshThumbnail()" />
+            <span>{{settings.color.dither?'Yes':'No'}}</span>
           </div>
         </div>
         <div class="form-group form-group-inline">

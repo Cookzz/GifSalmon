@@ -5,3 +5,9 @@
 .dimension-input {
     width: 52px
 }
+
+.label-checkbox {
+    vertical-align: text-top;
+    margin-right: 5px;
+    margin-left: 1px;
+}
