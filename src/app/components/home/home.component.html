@@ -10,7 +10,7 @@
         <h3 class="section-title">Input File</h3>
         <div class="form-group">
           <div class="form-control">
-            <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+            <input type="file" class="file-input" accept="video/*" (change)="onFileSelected($event)" #fileUpload>
             @if (!settings.file.input) {
               <a class="btn" (click)="fileUpload.click()">Select File</a>
             }
