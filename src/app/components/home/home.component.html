@@ -136,12 +136,12 @@
               </div>
               <div class="progress-action">
                 <div [hidden]="!(status.export.progress < 100)">
-                  <a class="btn" href (click)="cancelExport()">Cancel</a>
+                  <a class="btn" (click)="cancelExport()">Cancel</a>
                 </div>
                 <div [hidden]="status.export.progress !== 100">
-                  <a class="btn" href (click)="reveal()">Show in folder</a>
-                  <a class="btn" href (click)="preview()">Preview</a>
-                  <a class="btn btn-primary" href (click)="exportDone()">Done</a>
+                  <a class="btn" (click)="reveal()">Show in folder</a>
+                  <a class="btn" (click)="preview()">Preview</a>
+                  <a class="btn btn-primary" (click)="exportDone(true)">Done</a>
                 </div>
               </div>
             </div>
