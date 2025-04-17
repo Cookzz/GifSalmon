@@ -248,7 +248,7 @@ input[type="number"]:disabled {
   font-size: 12px;
   outline: none;
   appearance: none;
-  background-color: transparent;
+  background-color: #333;
   min-width: 40px;
   padding: 5px 25px 5px 5px;
   border: 0;
@@ -437,13 +437,14 @@ h6 {
 
 }
 .progress-action a {
-  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .progress-text-percent {
   font-weight: bold;
   display: inline-block;
   color: #fff;
+  margin-right: 10px;
 }
 .progress-text-size {
   font-size: 11px;
