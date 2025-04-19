@@ -44,7 +44,7 @@
     "@electron/packager": "^18.3.6",
     "@types/jasmine": "~5.1.0",
     "@types/jquery": "^3.5.32",
-    "electron": "^35.1.5",
+    "electron": "^35.2.0",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
