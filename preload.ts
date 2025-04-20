@@ -3,9 +3,9 @@ import { parse, join } from 'path'
 import { format } from 'url'
 
 /* Additional functions */
-const formatPath = (path: any) => {
+const formatPath = (path: any, ext: string) => {
     const base = parse(path);
-    return join(base.dir, base.name+'.gif');
+    return join(base.dir, `${base.name}.${ext}`);
 }
 
 const formatUrl = (path: string) => {

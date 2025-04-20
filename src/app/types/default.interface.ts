@@ -4,7 +4,9 @@ export interface Defaults {
     probe: Probe
     dimensions: Dimensions
     fps: number
-    color: Colors
+    color: Colors,
+    exportType: ExportTypes,
+    export: ExportSettings
 }
 
 interface FileInput {
@@ -35,4 +37,30 @@ interface Colors {
     count: number
     dither_scale: number
     alpha: boolean
+}
+
+interface ExportSettings {
+    webp: WebPSettings
+}
+
+interface WebPSettings {
+    lossless: boolean //0 or 1
+    compression_level: number
+    quality: number
+    loop: boolean //0 or 1
+    preset: PresetTypes
+}
+
+export enum PresetTypes {
+    custom = "custom",
+    default = "default",
+    balanced = "balanced",
+    max = "max"
+}
+
+export enum ExportTypes {
+    gif = "gif",
+    apng = "apng",
+    webp = "webp",
+    avif = "avif"
 }

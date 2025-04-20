@@ -9,5 +9,50 @@
 .label-checkbox {
     vertical-align: text-top;
     margin-right: 5px;
+    margin-left: 5px;
+}
+
+.comments {
+    font-size: 10px;
+}
+
+.infolink:before
+{
+    content: '?';
+    display: inline-block;
+    font-family: sans-serif;
+    font-weight: bold;
+    text-align: center;
+    width: 2.5ex;
+    height: 2.5ex;
+    font-size: 1.5ex;
+    line-height: 1.8ex;
+    border-radius: 1.2ex;
+    margin-right: 4px;
+    margin-left: 5px;
+    padding: 1px;
+    color: white;
+    background: #333;
+    border: 1px solid white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.tooltip-content {
+    font-size: 11px
+}
+
+.tooltip-line {
+    display: block;
+}
+
+.suffix {
     margin-left: 1px;
+}
+
+.checkbox-inline-group {
+    display: flex;
+}
+.checkbox-inline-container {
+    flex: 1
 }

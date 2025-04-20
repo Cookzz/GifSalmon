@@ -46,66 +46,145 @@
           </div>
         </div>
 
-        <!-- <h6>Color Options</h6> -->
-        <h3 class="section-title">Dither Options</h3>
-        <div class="form-group form-group-inline">
-          <h5>Dither</h5>
-          <div class="form-group-inline">
-            <input class="label-checkbox" type="checkbox" [disabled]="status.state<5" [(ngModel)]="settings.color.dither" (change)="refreshThumbnail()" />
-            <span>{{settings.color.dither?'Yes':'No'}}</span>
-          </div>
-        </div>
-        <div class="form-group form-group-inline">
-          <h5>Dither Grid</h5>
-          <div class="custom-select" [ngClass]="{'disabled': !settings.color.dither || status.state < 5}">
-            <select [(ngModel)]="settings.color.dither_scale" (change)="refreshThumbnail()" [disabled]="!settings.color.dither || status.state<5">
-              <option [ngValue]="0">0</option>
-              <option [ngValue]="1">1</option>
-              <option [ngValue]="2">2</option>
-              <option [ngValue]="3">3</option>
-              <option [ngValue]="4">4</option>
-              <option [ngValue]="5">5</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group form-group-inline">
-          <h5>Palette Mode</h5>
-
-          <div class="custom-select" [ngClass]="{'disabled': status.state < 5}">
-            <select (change)="refreshPalette()" [disabled]="status.state<5" [(ngModel)]="settings.color.stats_mode">
-              <option value="full">Full</option>
-              <option value="diff">Frame Difference</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group form-group-inline">
-          <h5>Stats Mode</h5>
-
-          <div class="custom-select" [ngClass]="{'disabled': status.state<5}">
-            <select (change)="refreshPalette()" [disabled]="status.state<5" [(ngModel)]="settings.color.diff_mode">
-              <option value="rectangle">Rectangle</option>
-              <option value="none">None</option>
-            </select>
-          </div>
-        </div>
-
-
-
-        <h3 class="section-title">Color Palette</h3>
         <div class="form-group">
-          <h5>Colors</h5>
-          <div class="form-control">
-            <div class="custom-range">
-              <div class="custom-range-value"><input type="number" [disabled]="status.state<5" min="16" max="256" (blur)="refreshPalette()" [(ngModel)]="color_value" /></div>
-              <div class="custom-range-input">
-                <input type="range" min="16" step="2" max="256" [disabled]="status.state<5" (mouseup)="refreshPalette()" [(ngModel)]="settings.color.count" />
+          <h5>Export as</h5>
+          <div class="form-group-inline">
+            <div class="custom-select" [ngClass]="{'disabled': status.state < 5}">
+              <select [disabled]="status.state < 5" [(ngModel)]="settings.exportType">
+                <option value="gif">GIF</option>
+                <option value="webp" [defaultSelected]="true">WebP</option>
+                <!-- <option value="apng">APNG</option>
+                <option value="avif">AVIF</option> -->
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Have the options change based on selected export -->
+        @if (settings.exportType === "gif") {
+          <!-- <h6>Color Options</h6> -->
+          <h3 class="section-title">Dither Options</h3>
+          <div class="form-group form-group-inline">
+            <h5>Dither</h5>
+            <div class="form-group-inline">
+              <input class="label-checkbox" type="checkbox" [disabled]="status.state<5" [(ngModel)]="settings.color.dither" (change)="refreshThumbnail()" />
+              <span>{{settings.color.dither?'Yes':'No'}}</span>
+            </div>
+          </div>
+          <div class="form-group form-group-inline">
+            <h5>Dither Grid</h5>
+            <div class="custom-select" [ngClass]="{'disabled': !settings.color.dither || status.state < 5}">
+              <select [(ngModel)]="settings.color.dither_scale" (change)="refreshThumbnail()" [disabled]="!settings.color.dither || status.state<5">
+                <option [ngValue]="0">0</option>
+                <option [ngValue]="1">1</option>
+                <option [ngValue]="2">2</option>
+                <option [ngValue]="3">3</option>
+                <option [ngValue]="4">4</option>
+                <option [ngValue]="5">5</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group form-group-inline">
+            <h5>Palette Mode</h5>
+
+            <div class="custom-select" [ngClass]="{'disabled': status.state < 5}">
+              <select (change)="refreshPalette()" [disabled]="status.state<5" [(ngModel)]="settings.color.stats_mode">
+                <option value="full">Full</option>
+                <option value="diff">Frame Difference</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group form-group-inline">
+            <h5>Stats Mode</h5>
+
+            <div class="custom-select" [ngClass]="{'disabled': status.state<5}">
+              <select (change)="refreshPalette()" [disabled]="status.state<5" [(ngModel)]="settings.color.diff_mode">
+                <option value="rectangle">Rectangle</option>
+                <option value="none">None</option>
+              </select>
+            </div>
+          </div>
+
+
+
+          <h3 class="section-title">Color Palette</h3>
+          <div class="form-group">
+            <h5>Colors</h5>
+            <div class="form-control">
+              <div class="custom-range">
+                <div class="custom-range-value"><input type="number" [disabled]="status.state<5" min="16" max="256" (blur)="refreshPalette()" [(ngModel)]="color_value" /></div>
+                <div class="custom-range-input">
+                  <input type="range" min="16" step="2" max="256" [disabled]="status.state<5" (mouseup)="refreshPalette()" [(ngModel)]="settings.color.count" />
+                </div>
+              </div>
+            </div>
+            @if (palette !== null) {
+              <div class="palette-control">
+                <pixel-palette [palette]="palette" [maxColors]="settings.color.count" />
+              </div>
+            }
+          </div>
+        }
+        @else if (settings.exportType === "webp") {
+          <h3 class="section-title">Compression Options</h3>
+          <div class="form-group">
+            <h5>Presets</h5>
+            <div class="custom-select" [ngClass]="{'disabled': status.state < 5}">
+              <select [(ngModel)]="settings.export.webp.preset" [disabled]="settings.export.webp.preset !== 'custom' && status.state < 5">
+                <option value="default">Default</option>
+                <option value="balanced">Balanced</option>
+                <option value="max">Max</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+            <a class="infolink" [pTooltip]="presetTooltipContent" tooltipPosition="right"></a>
+            <ng-template #presetTooltipContent>
+              <div class="tooltip-content">
+                  <label class="tooltip-line"><b>Default: </b>Use default compression settings defined by the tool</label>
+                  <label class="tooltip-line"><b>Balanced: </b>Use reasonable compression settings</label>
+                  <label class="tooltip-line"><b>Max: </b>Use best compression possible</label> 
+                  <label class="tooltip-line"><b>Custom: </b>Allow user customization</label>
+              </div>
+            </ng-template>
+          </div>
+
+          <div class="form-group">
+            <h5>Settings</h5>
+            <div class="checkbox-inline-group">
+              <div class="checkbox-inline-container">
+                <input class="label-checkbox" type="checkbox" [disabled]="settings.export.webp.preset !== 'custom' && status.state < 5" [(ngModel)]="settings.export.webp.lossless" />
+                <span class="checkbox-inline-label">Lossless</span>
+              </div>
+              <div class="checkbox-inline-container">
+                <input class="label-checkbox" type="checkbox" [disabled]="settings.export.webp.preset !== 'custom' && status.state < 5" [(ngModel)]="settings.export.webp.loop" />
+                <span class="checkbox-inline-label">Loop</span>
               </div>
             </div>
           </div>
-          <div class="palette-control">
-             <pixel-palette [palette]="palette" [maxColors]="settings.color.count" />
+
+          <div class="form-group">
+            <h5>Compression Level</h5>
+            <div class="custom-select" [ngClass]="{'disabled': settings.export.webp.preset !== 'custom' && status.state < 5}">
+              <select [(ngModel)]="settings.export.webp.compression_level" [disabled]="settings.export.webp.preset !== 'custom' && status.state < 5">
+                <option [ngValue]="1">1</option>
+                <option [ngValue]="2">2</option>
+                <option [ngValue]="3" [defaultSelected]="true">3</option>
+                <option [ngValue]="4">4</option>
+                <option [ngValue]="5">5</option>
+                <option [ngValue]="6">6</option>
+              </select>
+            </div>
+            <div><label class="comments">Higher is better but slower</label></div>
           </div>
-        </div>
+          
+          <div class="form-group">
+            <h5>Quality</h5>
+            <div class="form-control">
+              <input type="number" [disabled]="settings.export.webp.preset !== 'custom' && status.state < 5" min="1" max="100" step="1" [(ngModel)]="settings.export.webp.quality" />
+              <label class="suffix">%</label>
+            </div>
+          </div>
+        }
       </div>
 
 

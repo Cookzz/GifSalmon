@@ -1,5 +1,5 @@
 import { Component, NgZone } from "@angular/core";
-import { LoaderComponent } from "../loader/loader.component";
+import { Loader } from "../loader/loader.component";
 import { ElectronService } from '../../../service/electron.service';
 
 /* A very simple slider without dependency on third party components */
@@ -7,7 +7,7 @@ import { ElectronService } from '../../../service/electron.service';
     selector: "ffmpeg",
     templateUrl: './ffmpeg.component.html',
     styleUrl: './ffmpeg.component.css',
-    imports: [LoaderComponent]
+    imports: [Loader]
 })
 
 export class FfmpegComponent {

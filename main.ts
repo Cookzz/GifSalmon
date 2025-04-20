@@ -22,11 +22,27 @@ const { detectPlatform, downloadFiles } = require('ffbinaries');
 fixPath()
 const settingsPath = join(app.getPath('userData'),'app_db.json');
 
+//add enum here
+enum ExportTypes {
+  gif = "gif",
+  apng = "apng",
+  webp = "webp",
+  avif = "avif"
+}
+enum PresetTypes {
+  custom = "custom",
+  default = "default",
+  balanced = "balanced",
+  max = "max"
+}
+
+//init variables here
 let win: BrowserWindow | null;
 let db: any;
 let ffmpeg_path: string;
 let ffprobe_path: string;
 let ffmpeg_ps: ChildProcessWithoutNullStreams;
+let exportCancelled: boolean = false
 
 const createWindow = (needs_ffmpeg?: boolean) => {
   const externalDisplay = screen.getPrimaryDisplay()
@@ -229,8 +245,31 @@ ipcMain.on('cancelProcess', () => {
 });
 
 /* Export */
-let exportCancelled = false
 ipcMain.on('exportGif', (event, input, output, palette, settings) => {
+  switch (settings.exportType) {
+    case ExportTypes.gif:
+      exportAsGif(event, input, output, palette, settings)
+      break;
+    case ExportTypes.webp:
+      exportAsWebp(event, input, output, palette, settings)
+      break;
+    default:
+      break;
+  }
+});
+
+ipcMain.on('cancel_export', (event, opts) => {
+  exportCancelled = true;
+  if(ffmpeg_ps){ ffmpeg_ps.kill(); }
+  if(opts.remove){
+      //remove the partially exported file
+      console.log("REMOVE", opts.remove);
+      unlinkSync(opts.remove);
+  }
+});
+
+/* Export types */
+const exportAsGif = (event: any, input: any, output: any, palette: any, settings: any) => {
   const stats = settings.color.stats_mode || 'full';
   const dither = settings.color.dither ? ('bayer:bayer_scale='+settings.color.dither_scale) : 'none';
   const colors = settings.color.colors || 256;
@@ -275,19 +314,103 @@ ipcMain.on('exportGif', (event, input, output, palette, settings) => {
 
   ffmpeg_ps.stdin.write(Buffer.from(palette, 'base64'));
   ffmpeg_ps.stdin.end();
-});
+}
 
-ipcMain.on('cancel_export', (event, opts) => {
-  exportCancelled = true;
-  if(ffmpeg_ps){ ffmpeg_ps.kill(); }
-  if(opts.remove){
-      //remove the partially exported file
-      console.log("REMOVE", opts.remove);
-      unlinkSync(opts.remove);
-  }
-});
+const exportAsWebp = (event: any, input: any, output: any, palette: any, settings: any) => {
+  console.log("exporting as WebP")
+  // const stats = settings.color.stats_mode || 'full';
+  // const dither = settings.color.dither ? ('bayer:bayer_scale='+settings.color.dither_scale) : 'none';
+  // const colors = settings.color.colors || 256;
+  
+  if(ffmpeg_ps) ffmpeg_ps.kill();
+
+  const compressionOptions = getWebpSettings(input, output, settings)
+
+  ffmpeg_ps = spawn(ffmpeg_path, compressionOptions)
+  
+  ffmpeg_ps.stderr.on('data', (d) => {
+    const progress = parseProgressLine(d.toString());
+    console.log(progress);
+    if (progress && progress.time){
+        const progress_obj = {
+            sec: timemarkToSeconds(progress.time),
+            size: progress.size ? parseInt(progress.size.replace('kB',''))*1000 : 0
+        }
+        event.sender.send('export_progress', progress_obj);
+    }
+  });
+  ffmpeg_ps.on('close', () => {
+      console.log('done');
+      if (exportCancelled) {
+          exportCancelled = false;
+          event.sender.send('export_canceled', {});
+      } else {
+          event.sender.send('export_finished', getFilesizeInBytes(output));
+      }
+  });
+
+  ffmpeg_ps.stdin.write(Buffer.from(palette, 'base64'));
+  ffmpeg_ps.stdin.end();
+}
+
 
 /* Misc functions */
+const getWebpSettings = (input: any, output: any, settings: any) => {
+  const fps = settings.fps || 10;
+  const w = settings.dimensions.width || 320;
+  const h = settings.dimensions.height || 240;
+  const scaleCmd = `${w}:${h}`
+  const fpsCmd = util.format("fps=fps=%s", fps);
+
+  const presetType = settings.export.webp.preset
+
+  if (presetType === PresetTypes.default){
+    return [
+      "-i", input,
+      "-filter:v", fpsCmd,
+      "-preset", "default", // set predefined values by the tool/codec
+      "-loop", 0,
+      "-s", scaleCmd,
+      "-f", settings.exportType,
+      output
+    ]
+  }
+
+  let compressionLevel = settings.export.webp.compression_level
+  let lossless = settings?.export?.webp?.lossless ? 1 : 0
+  let quality = settings.export.webp.quality
+  let loop = settings?.export?.webp?.loop ? 0 : 1
+
+  /* Fixed values if its not a custom preset */
+  if (presetType === PresetTypes.balanced) {
+    lossless = 0
+    compressionLevel = 3
+    quality = 75
+    loop = 0
+  } else if (presetType === PresetTypes.max){
+    lossless = 0
+    compressionLevel = 6
+    quality = 50
+    loop = 0
+  }
+
+  return [
+    "-i", input,
+    // "-vcodec", 'libwebp',
+    "-filter:v", fpsCmd,
+    "-lossless", lossless,
+    "-compression_level", compressionLevel,
+    "-q:v", quality,
+    "-loop", loop,
+    // "-preset", "default", //do not use if compression is required
+    "-an",
+    "-fps_mode", "cfr",
+    "-s", scaleCmd,
+    "-f", settings.exportType,
+    output
+  ]
+}
+
 const timemarkToSeconds = (timemark: string | number) => {
   if (typeof timemark === 'number') {
       return timemark;

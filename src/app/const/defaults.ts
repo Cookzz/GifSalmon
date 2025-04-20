@@ -1,4 +1,4 @@
-import { Defaults } from "../types/default.interface";
+import { Defaults, ExportTypes, PresetTypes } from "../types/default.interface";
 
 export const defaultValue: Defaults = {
   file: { input: null },
@@ -19,5 +19,15 @@ export const defaultValue: Defaults = {
     count: 256,
     dither_scale: 3,
     alpha: false
+  },
+  exportType: ExportTypes.webp,
+  export: {
+    webp: {
+      lossless: false,
+      compression_level: 4,
+      quality: 70,
+      loop: true,
+      preset: PresetTypes.default,
+    }
   }
 }

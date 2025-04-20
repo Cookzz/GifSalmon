@@ -2,7 +2,10 @@ import { Component, NgZone } from '@angular/core';
 import { FileSizePipe, RatioPipe, NumberPipe, FrameratePipe } from '../../pipes'
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { LoaderComponent } from "../loader/loader.component";
+import { TooltipModule } from 'primeng/tooltip';
+import { InputNumberModule } from 'primeng/inputnumber';
+
+import { Loader } from "../loader/loader.component";
 import { ElectronService } from '../../../service/electron.service';
 import { Defaults } from '../../types/default.interface';
 import { FrameScrubber } from "../frame-scrubber/frame-scrubber.component";
@@ -11,7 +14,7 @@ import { PixelPalette } from "../pixel-palette/palette.component";
 
 @Component({
   selector: 'home',
-  imports: [FileSizePipe, RatioPipe, NumberPipe, FormsModule, CommonModule, LoaderComponent, FrameScrubber, PixelPalette],
+  imports: [FileSizePipe, RatioPipe, NumberPipe, FormsModule, CommonModule, TooltipModule, Loader, FrameScrubber, PixelPalette],
   providers: [FrameratePipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -37,9 +40,9 @@ export class HomeComponent {
   }
 
   //these follow default, but not sure what "stored" value is for
-  defaults: Defaults = defaultValue
-  settings: Defaults = defaultValue
-  stored: Defaults = defaultValue
+  defaults: Defaults = Object.assign({}, defaultValue)
+  settings: Defaults = Object.assign({}, defaultValue)
+  stored: Defaults = Object.assign({}, defaultValue)
 
   thumbnail: string | null = null
   palette = null
@@ -79,7 +82,7 @@ export class HomeComponent {
         duration: videoStream.duration, 
         rate: (videoStream?.r_frame_rate ?? videoStream?.avg_frame_rate)
       }
-      
+
       this.settings.dimensions.width = videoStream.width
       this.settings.dimensions.height = videoStream.height
       this.settings.dimensions.original_width = videoStream.width
@@ -135,7 +138,7 @@ export class HomeComponent {
   exportCancelled(){
     this.zone.run(()=>{
       this.status.export.canceling = false;
-      this.exportDone();
+      this.exportDone(false);
     })
   }
   /* Listener function here */
@@ -232,7 +235,7 @@ export class HomeComponent {
   //export functions
   export(){
     const filePath = this.electron.getPathForFile(this.settings.file.input)
-    const output = this.electron.formatPath(filePath)
+    const output = this.electron.formatPath(filePath, this.settings.exportType)
 
     //save dialog doesnt work in renderer anymore, we invoke it to the main instead
     this.electron.invoke("save-dialog", output).then((outputFile: any)=>{
@@ -250,9 +253,30 @@ export class HomeComponent {
     this.electron.send('cancel_export', { remove: this.status.export.path })
   }
 
-  exportDone(){
-    this.status.state = 5
-    this.status.export = { progress: 0, size: 0, path: null, canceling: false }
+  exportDone(reset?: boolean){
+    if (reset){
+      this.status = {
+        state: 0,
+        export: {
+          progress: 0,
+          size: 0,
+          path: null,
+          canceling: false
+        }
+      }
+      this.settings = Object.assign({}, defaultValue)
+      this.stored = Object.assign({}, defaultValue)
+      this.frames = {
+        current: 0,
+        min: 0,
+        max: 100
+      }
+      this.palette = null
+    } else {
+      this.status.state = 5
+      this.status.export.progress = 0;
+      this.status.export.size = 0;
+    }
   }
 
   reveal(){
@@ -265,8 +289,4 @@ export class HomeComponent {
   }
 
   /* Independently update scope */
-  
-  
-  /* ngModel changes with no interactions with ipcRenderer or main.ts */
-  /* Main functionality (these are generally imported from renderer.js) */
 }
