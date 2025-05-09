@@ -29,7 +29,7 @@
     "@primeng/themes": "^19.1.2",
     "ffbinaries": "^1.1.6",
     "fix-path": "^4.0.0",
-    "jquery": "^3.7.1",
+    "jquery": "^4.0.0-beta.2",
     "lowdb": "^7.0.1",
     "primeng": "^19.1.2",
     "rxjs": "~7.8.0",
