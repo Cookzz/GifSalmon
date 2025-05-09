@@ -17,7 +17,7 @@ import * as util from 'node:util'
 const { Low } = require('lowdb')
 const { JSONFile } = require('lowdb/node')
 const { sync } = require('which')
-const { detectPlatform, downloadFiles } = require('ffbinaries');
+const { detectPlatform, downloadFiles } = require('ffbinaries-plus');
 
 fixPath()
 const settingsPath = join(app.getPath('userData'),'app_db.json');
