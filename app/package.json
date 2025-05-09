@@ -11,7 +11,7 @@
     "main": "main.js",
     "dependencies": {
         "angular": "^1.8.3",
-        "ffbinaries": "^1.1.6",
+        "ffbinaries-plus": "^1.2.4",
         "fix-path": "^4.0.0",
         "jquery": "^3.7.1",
         "lowdb": "^7.0.1",

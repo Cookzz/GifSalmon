@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog, screen } = require('electron');
 const { join, dirname } = require('path');
 const { sync } = require('which');
-const { detectPlatform, downloadFiles } = require('ffbinaries');
+const { detectPlatform, downloadFiles } = require('ffbinaries-plus');
 const { statSync, unlinkSync } = require('fs');
 const { spawn, exec } = require('child_process');
 const { Low } = require('lowdb');
