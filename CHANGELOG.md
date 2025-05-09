@@ -39,7 +39,7 @@ The versioning is continuation of [GifTuna's v1.0.7](https://github.com/dudewher
 
 - Updated electron version (1.6.2 -> 35.0.3)
 - Updated AngularJS (1.6.4 -> v1.8.3)
-- Updated ffbinaries (1.0.1 -> 1.1.6)
+- Updated ffbinaries (1.0.1) to ffbinaries-plus (1.2.4, request deprecated for axios)
 - Updated fix-path (2.1.0 -> 4.0.0)
 - Updated jQuery (3.2.1 -> 3.7.1)
 - Updated lowdb (0.16.2 -> 7.0.1)

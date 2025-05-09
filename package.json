@@ -27,7 +27,7 @@
     "@angular/platform-browser-dynamic": "^19.2.10",
     "@angular/router": "^19.2.10",
     "@primeng/themes": "^19.1.2",
-    "ffbinaries": "^1.1.6",
+    "ffbinaries-plus": "^1.2.4",
     "fix-path": "^4.0.0",
     "jquery": "^4.0.0-beta.2",
     "lowdb": "^7.0.1",
