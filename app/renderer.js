@@ -387,7 +387,7 @@ app.directive('pixelPalette', ($timeout,$rootScope) => {
         inline: true,
         format: 'rgb',
         change: (value, opacity) => {
-          var rgb = $(this).minicolors('rgbObject');
+          const rgb = $mini.minicolors('rgbObject');
           $timeout(() => {
             // scope.pixels[scope.pixelIndex] = [rgb.r,rgb.g,rgb.b];
             scope.rgb = rgb;
