@@ -13,7 +13,7 @@
         "angular": "^1.8.3",
         "ffbinaries-plus": "^1.2.4",
         "fix-path": "^4.0.0",
-        "jquery": "^3.7.1",
+        "jquery": "^4.0.0-beta.2",
         "lowdb": "^7.0.1",
         "which": "^5.0.0"
     }
