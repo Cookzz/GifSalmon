@@ -349,8 +349,8 @@ app.directive('pixelPalette', ($timeout,$rootScope) => {
     templateUrl: 'tpl/palette.html',
     require: 'ngModel',
     scope: {
-      ngModel:'=',
-      maxColors:'='
+      ngModel: '=',
+      maxColors: '='
     },
     link: (scope, ele, attr, ngModelCtl) => {
       if (scope.ngModel){
@@ -376,7 +376,6 @@ app.directive('pixelPalette', ($timeout,$rootScope) => {
         const last = $(this).val().substr(-1)
         console.log(last);
         if(!regExp.test(last)){
-          console.log("NOPE");
           $(this).val($(this).val().slice(0,-1));
         }
       });
@@ -386,7 +385,7 @@ app.directive('pixelPalette', ($timeout,$rootScope) => {
 
       $mini.minicolors({
         inline: true,
-        format:'rgb',
+        format: 'rgb',
         change: (value, opacity) => {
           var rgb = $(this).minicolors('rgbObject');
           $timeout(() => {
@@ -543,6 +542,7 @@ app.directive('frameScrubber', () => {
   }
 })
 
+//this is no longer in use it seems
 app.directive('gifPreview',() => {
   return {
     // template: '<div class="preview-div" ng-style="$previewStyle()"></div>',
