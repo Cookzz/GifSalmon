@@ -408,6 +408,9 @@ app.directive('pixelPalette', ($timeout,$rootScope) => {
         $picker.removeClass('open');
         scope.pixelIndex = null;
         scope.rgb = {};
+
+        //kill scroll listener when closed
+        killScrollListener()
       }
       scope.$set = () => {
         $picker.removeClass('open');
@@ -415,6 +418,9 @@ app.directive('pixelPalette', ($timeout,$rootScope) => {
         scope.pixelIndex = null;
         put_palette();
         scope.rgb = {};
+
+        //kill scroll listener when closed
+        killScrollListener()
       }
       scope.pickMe = (i, e) => {
         e.preventDefault();
@@ -422,12 +428,15 @@ app.directive('pixelPalette', ($timeout,$rootScope) => {
 
         const p = $(e.target).offset();
         const color = scope.pixels[i];
-        $mini.minicolors('value', `rgb(${color.join(',')})`);
+        const colors = color.join(',')
+        $mini.minicolors('value', `rgb(${colors})`);
         scope.stored = color;
         scope.pixelIndex = i;
         scope.hexValue = rgb_to_hex(color[0], color[1], color[2]);
 
-        $picker.css('top',p.top+'px').css('left',p.left+'px').addClass('open');
+        setOrRefreshScrollListener(p.top)
+
+        $picker.css('top', `${p.top}px`).css('left', `${p.left}px`).addClass('open');
       }
 
       $(document).on('mouseup', (e) => {
@@ -441,6 +450,24 @@ app.directive('pixelPalette', ($timeout,$rootScope) => {
       scope.$color = (c) => {
         return {
           'background-color': `rgb(${c[0]},${c[1]},${c[2]})`
+        }
+      }
+
+      setOrRefreshScrollListener = (top) => {
+        //kill scroll listener if it exists
+        killScrollListener()
+
+        const currentScrollTop = $(document.body).find('div.settings-form').scrollTop() ?? 0
+        scope.scrollListener = $(document.body).find('div.settings-form').on('scroll', ()=>{
+            const scrollTop = ($(document.body).find('div.settings-form').scrollTop() ?? 0) - currentScrollTop
+            $picker.css('top', `${top - scrollTop}px`)
+        })
+      }
+
+      killScrollListener = () => {
+        if (scope.scrollListener){
+          scope.scrollListener = null
+          $(document.body).find('div.settings-form').off('scroll')
         }
       }
 
