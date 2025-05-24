@@ -144,6 +144,7 @@ export class PixelPalette implements OnChanges {
     /* picker-actions functions */
     set(){
         this.renderer.removeClass(this.picker?.nativeElement, 'open')
+        this.killScrollListener()
         this.pixels[this.pixelIndex] = [this.rgb.r, this.rgb.g, this.rgb.b];
         this.pixelIndex = null;
         this.put_palette();
@@ -152,6 +153,7 @@ export class PixelPalette implements OnChanges {
 
     close(){
         this.renderer.removeClass(this.picker?.nativeElement, 'open')
+        this.killScrollListener()
         this.pixelIndex = null
         this.rgb = {}
     }
@@ -184,15 +186,20 @@ export class PixelPalette implements OnChanges {
     /* Scroll listener for palette color picker */
     setOrRefreshScrollListener(top: number){
         //scroll listener will duplicate itself without doing this, you HAVE to turn it off first if it was ran once before
-        if (this.scrollListener){
-            this.scrollListener = null
-            $(document.body).find('div.settings-form').off('scroll')
-        }
+        this.killScrollListener()
 
         const currentScrollTop = $(document.body).find('div.settings-form').scrollTop() ?? 0
         this.scrollListener = $(document.body).find('div.settings-form').on('scroll', ()=>{
             const scrollTop = ($(document.body).find('div.settings-form').scrollTop() ?? 0) - currentScrollTop
             this.renderer.setStyle(this.picker?.nativeElement, 'top', `${top - scrollTop}px`)
         })
+    }
+
+    /* Destroy the listener when it has changed target or closed */
+    killScrollListener(){
+        if (this.scrollListener){
+            this.scrollListener = null
+            $(document.body).find('div.settings-form').off('scroll')
+        }
     }
 }
