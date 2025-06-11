@@ -38,8 +38,8 @@
     "zone.js": "~0.15.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^19.2.14",
-    "@angular/cli": "^19.2.14",
+    "@angular-devkit/build-angular": "^19.2.15",
+    "@angular/cli": "^19.2.15",
     "@angular/compiler-cli": "^19.2.14",
     "@electron/packager": "^18.3.6",
     "@types/jasmine": "~5.1.8",
@@ -52,8 +52,5 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.8.2"
-  },
-  "overrides": {
-    "webpack-dev-server": "5.2.1"
   }
 }
