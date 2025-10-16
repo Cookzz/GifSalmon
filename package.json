@@ -19,15 +19,15 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "^20.2.3",
-    "@angular/compiler": "^20.2.3",
-    "@angular/core": "^20.2.3",
-    "@angular/forms": "^20.2.3",
-    "@angular/platform-browser": "^20.2.3",
-    "@angular/router": "^20.2.3",
-    "@primeng/themes": "^20.1.1",
+    "@angular/common": "^20.3.5",
+    "@angular/compiler": "^20.3.5",
+    "@angular/core": "^20.3.5",
+    "@angular/forms": "^20.3.5",
+    "@angular/platform-browser": "^20.3.5",
+    "@angular/router": "^20.3.5",
+    "@primeng/themes": "^20.2.0",
     "ffbinaries-plus": "^1.2.4",
-    "fix-path": "^4.0.0",
+    "fix-path": "^5.0.0",
     "jquery": "^4.0.0-rc.1",
     "lowdb": "^7.0.1",
     "primeng": "^20.1.1",
@@ -37,19 +37,22 @@
     "zone.js": "~0.15.1"
   },
   "devDependencies": {
-    "@angular/build": "^20.2.1",
-    "@angular/cli": "^20.2.1",
-    "@angular/compiler-cli": "^20.2.3",
-    "@electron/packager": "^18.4.4",
-    "@types/jasmine": "~5.1.8",
+    "@angular/build": "^20.3.6",
+    "@angular/cli": "^20.3.6",
+    "@angular/compiler-cli": "^20.3.5",
+    "@electron/packager": "^19.0.0",
+    "@types/jasmine": "~5.1.11",
     "@types/jquery": "^3.5.33",
-    "electron": "^37.4.0",
-    "jasmine-core": "~5.10.0",
+    "electron": "^38.3.0",
+    "jasmine-core": "~5.12.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.3"
+  },
+  "overrides": {
+    "got": "^14.5.0"
   }
 }
