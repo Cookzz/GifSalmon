@@ -1,3 +1,29 @@
+## 2.0.0-alpha.2 (2025-12-06)
+
+I will only list the notable ones here
+
+**_Major changes_**
+* Updated Electrion (v35.1.5 -> 39.2.6)
+* Updated Angular (v19.2.6 -> 21.0.3)
+* Updated primeng (v19.1.0 -> 21.0.1)
+* Updated jquery to latest version (3.7.1 -> 4.0.0-rc.1)
+* Updated jasmine/karma/jest testing to vitest
+* Added "got" package override due to conflicts with the electron packager
+* Migrated [ffbinaries](https://www.npmjs.com/package/ffbinaries) to [ffbinaries-plus](https://www.npmjs.com/package/ffbinaries-plus) to fix security vulnerability
+* [Migrated @primeng/themes to @primeuix/themes](https://primeng.org/migration/v21) due to v12 changes
+* [Deprecated zone.js in favor of zoneless and change detection](https://angular.dev/guide/zoneless)
+* New feature: WebP support + additional compression options [c13808b](https://github.com/Cookzz/GifSalmon/commit/c13808bd0489f88a9eccecb96ef5c7d1bb01adee)
+
+**_Fixes_**
+* fix: forgot to re-add ffmpeg check [07fb0bb](https://github.com/Cookzz/GifSalmon/commit/07fb0bb3b1b4e6caa19455159ffccc82124bcdc4)
+* fix: inconsistent styling [1bb1043](https://github.com/Cookzz/GifSalmon/commit/1bb1043f01a8d03c9eb3d3dc4f957bbe46404368)
+* fix: file upload doesn't accept video-only [a47c5e7](https://github.com/Cookzz/GifSalmon/commit/a47c5e76b1f3484cabe06d2a89d543f60b29c16b)
+* fix: checkbox not properly aligned [540b1a8](https://github.com/Cookzz/GifSalmon/commit/540b1a8893c9d264a25973714a76794d249b6402)
+* fix: href breaking pages [1800a39](https://github.com/Cookzz/GifSalmon/commit/1800a3967dde5d8b063ad77b7a145ec05a5f484e)
+* fix: (security CVE-2023-28155) change to ffbinaries-plus [bbe3328](https://github.com/Cookzz/GifSalmon/commit/bbe33285f97684fd80534b37d3cb6f946d4f4bb2)
+* fix: scroll listener not killed properly [bf5621f](https://github.com/Cookzz/GifSalmon/commit/bf5621f95be083bf3a835945ca6f17d5f2a46528)
+
+
 ## 2.0.0-alpha (2025-04-16)
 Subject to change. Some are also missing commit ids because some changes are too scattered or are combined together.
 
