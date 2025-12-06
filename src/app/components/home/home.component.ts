@@ -1,4 +1,4 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FileSizePipe, RatioPipe, NumberPipe, FrameratePipe } from '../../pipes'
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -16,7 +16,8 @@ import { PixelPalette } from "../pixel-palette/palette.component";
   imports: [FileSizePipe, RatioPipe, NumberPipe, FormsModule, CommonModule, TooltipModule, Loader, FrameScrubber, PixelPalette],
   providers: [FrameratePipe],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class HomeComponent {
@@ -52,7 +53,7 @@ export class HomeComponent {
 
   constructor(
     private frameratePipe: FrameratePipe,
-    private zone: NgZone //this is required as listeners technically runs "outside" of angular globalThis
+    private cdr: ChangeDetectorRef //deprecate ngzone for this, so that i can control manual detection for state variable changes
   ){
     this.initListeners()
   }
@@ -69,38 +70,39 @@ export class HomeComponent {
 
   /* Listener function here */
   getProbeResult(event: any, probe: any){
-    this.zone.run(()=>{
-      const videoStream = probe.streams.find((it: any) => (it.codec_type=='video'));
-      if(!videoStream){
-        console.error("No video stream found");
-        return;
-      };
-      
-      this.frames.max = Number((Math.floor(videoStream.duration * 10) / 10).toFixed(1)) - 0.1;
-      this.settings.probe = { 
-        duration: videoStream.duration, 
-        rate: (videoStream?.r_frame_rate ?? videoStream?.avg_frame_rate)
-      }
+    console.log("get probe result")
 
-      this.settings.dimensions.width = videoStream.width
-      this.settings.dimensions.height = videoStream.height
-      this.settings.dimensions.original_width = videoStream.width
-      this.settings.dimensions.original_height = videoStream.height
-      this.settings.dimensions.ratio = videoStream.width/videoStream.height
+    const videoStream = probe.streams.find((it: any) => (it.codec_type=='video'));
+    if(!videoStream){
+      console.error("No video stream found");
+      return;
+    };
+    
+    this.frames.max = Number((Math.floor(videoStream.duration * 10) / 10).toFixed(1)) - 0.1;
+    this.settings.probe = { 
+      duration: videoStream.duration, 
+      rate: (videoStream?.r_frame_rate ?? videoStream?.avg_frame_rate)
+    }
 
-      this.settings.fps = parseInt(this.frameratePipe.transform((videoStream?.r_frame_rate ?? videoStream.avg_frame_rate), true))
+    this.settings.dimensions.width = videoStream.width
+    this.settings.dimensions.height = videoStream.height
+    this.settings.dimensions.original_width = videoStream.width
+    this.settings.dimensions.original_height = videoStream.height
+    this.settings.dimensions.ratio = videoStream.width/videoStream.height
 
-      //get thumbnail
-      this.refreshPalette();
-    })
+    this.settings.fps = parseInt(this.frameratePipe.transform((videoStream?.r_frame_rate ?? videoStream.avg_frame_rate), true))
+
+    //get thumbnail
+    this.refreshPalette();
+    this.cdr.detectChanges();
   }
 
   getPaletteResult(event: any, paletteResult: any){
     if (this.status.state == 2){
-      this.zone.run(()=>{
-        this.palette = paletteResult
-        this.status.state = 3
-      })
+      this.palette = paletteResult
+      this.status.state = 3
+      this.cdr.detectChanges();
+
       const time = this.frames.current
       const path = this.electron.getPathForFile(this.settings.file.input)
       this.electron.send('getThumbnail', path, this.palette, time, this.settings)
@@ -108,37 +110,33 @@ export class HomeComponent {
   }
 
   getThumbnailResult(event: any, thumbnailResult: any){
-    this.zone.run(()=>{
-      this.thumbnail = `data:image/gif;base64,${thumbnailResult}`
-      this.status.state = 5
-      this.stored = this.settings
-    })
+    this.thumbnail = `data:image/gif;base64,${thumbnailResult}`
+    this.status.state = 5
+    this.stored = this.settings
+    this.cdr.detectChanges();
   }
 
   exportProgress(event: any, progress: any){
     console.log("Progress", progress);
     const p = (progress.sec/this.settings.probe.duration)*100;
 
-    this.zone.run(()=>{
-      this.status.export.progress = p;
-      this.status.export.size = progress.size;
-    })
+    this.status.export.progress = p;
+    this.status.export.size = progress.size;
+    this.cdr.detectChanges();
   }
 
   exportFinished(event: any, size: any){
     console.log("DONE!");
 
-    this.zone.run(()=>{
-      this.status.export.progress = 100;
-      this.status.export.size = size;
-    })
+    this.status.export.progress = 100;
+    this.status.export.size = size;
+    this.cdr.detectChanges();
   }
 
   exportCancelled(){
-    this.zone.run(()=>{
-      this.status.export.canceling = false;
-      this.exportDone(false);
-    })
+    this.status.export.canceling = false;
+    this.exportDone(false);
+    this.cdr.detectChanges();
   }
   /* Listener function here */
 

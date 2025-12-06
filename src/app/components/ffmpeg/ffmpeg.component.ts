@@ -1,4 +1,4 @@
-import { Component, NgZone } from "@angular/core";
+import { Component, ChangeDetectorRef } from "@angular/core";
 import { Loader } from "../loader/loader.component";
 import { ElectronService } from '../../../service/electron.service';
 
@@ -15,14 +15,13 @@ export class FfmpegComponent {
 
     electron = new ElectronService().getElectron()
 
-    constructor(private zone: NgZone){
+    constructor(private cdr: ChangeDetectorRef){
         this.electron.on('ffmpeg_installed', this.installedFfmpeg.bind(this))
     }
 
     installedFfmpeg(){
-        this.zone.run(()=>{
-            this.installing = false
-        })
+        this.installing = false
+        this.cdr.detectChanges();
     }
 
     ffmpeg_click(){
