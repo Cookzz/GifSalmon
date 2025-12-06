@@ -3,7 +3,6 @@ import { FileSizePipe, RatioPipe, NumberPipe, FrameratePipe } from '../../pipes'
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TooltipModule } from 'primeng/tooltip';
-import { InputNumberModule } from 'primeng/inputnumber';
 
 import { Loader } from "../loader/loader.component";
 import { ElectronService } from '../../../service/electron.service';
