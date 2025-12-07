@@ -8,7 +8,7 @@
     "build_mac": "npx @electron/packager ./app GifSalmon --ignore=.gitignore --platform=darwin --icon=./resources/logo-hires-v2.icns --out=./build/mac/ --overwrite",
     "build_win": "npx @electron/packager ./app GifSalmon --platform=win32 --icon=./resources/logo-hires-v2.iconset --out=./build/win/ --overwrite",
     "build_linux": "npx @electron/packager ./app GifSalmon --platform=linux --icon=./resources/logo-hires-v2-256x256@2x.png --out=./build/linux/ --overwrite",
-    "build_all": "npm run build_mac && npm run build_win && npm run build_linux"
+    "build_all": "npm run build_win && npm run build_linux && npm run build_mac"
   },
   "author": "brian@ndmweb.com (@dudewheresmycode)",
   "license": "MIT",
