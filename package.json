@@ -15,7 +15,7 @@
     "build_win": "npm run build && npx @electron/packager . GifSalmon --ignore=/main.ts --ignore=/preload.ts --ignore=/.angular --ignore=/.vscode --ignore=/resources --ignore=/src/app --ignore=/src/service --ignore=/src/index.html --ignore=/src/main.ts --ignore=/src/styles.css --platform=win32 --icon=./resources/logo-hires-v2.iconset --out=./build/win/ --overwrite",
     "build_linux": "npm run build && npx @electron/packager . GifSalmon --ignore=/main.ts --ignore=/preload.ts --ignore=/.angular --ignore=/.vscode --ignore=/resources --ignore=/src/app --ignore=/src/service --ignore=/src/index.html --ignore=/src/main.ts --ignore=/src/styles.css --platform=linux --icon=./resources/logo-hires-v2-256x256@2x.png --out=./build/linux/ --overwrite",
     "build_mac": "npm run build && npx @electron/packager . GifSalmon --ignore=/main.ts --ignore=/preload.ts --ignore=/.angular --ignore=/.vscode --ignore=/resources --ignore=/src/app --ignore=/src/service --ignore=/src/index.html --ignore=/src/main.ts --ignore=/src/styles.css --platform=darwin --icon=./resources/logo-hires-v2.icns --out=./build/mac/ --overwrite",
-    "build_all": "npm run build_mac && npm run build_win && npm run build_linux",
+    "build_all": "npm run build_win && npm run build_linux && npm run build_mac",
     "test": "ng test",
     "test:watch": "ng test --watch",
     "vite-init": "vitest --config ./vitest.config.ts"
@@ -45,7 +45,7 @@
     "@electron/packager": "^19.0.1",
     "@types/jquery": "^3.5.33",
     "electron": "^39.2.6",
-    "jsdom": "^27.2.0",
+    "jsdom": "^27.3.0",
     "typescript": "~5.9.3",
     "vitest": "^4.0.15"
   },
