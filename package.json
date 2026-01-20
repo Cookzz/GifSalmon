@@ -44,7 +44,7 @@
     "@angular/compiler-cli": "^21.1.0",
     "@electron/packager": "^19.0.1",
     "@types/jquery": "^3.5.33",
-    "electron": "^39.2.7",
+    "electron": "^40.0.0",
     "jsdom": "^27.4.0",
     "typescript": "~5.9.3",
     "vitest": "^4.0.17"
