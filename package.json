@@ -51,6 +51,7 @@
   },
   "overrides": {
     "got": "^14.5.0",
-    "minimatch": "^10.2.2"
+    "minimatch": "^10.2.2",
+    "ajv": "^8.18.0"
   }
 }
