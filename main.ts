@@ -61,7 +61,6 @@ const createWindow = (needs_ffmpeg?: boolean) => {
     }
   });
 
-  win.webContents.openDevTools()
   // load the dist folder from Angular
   win.loadURL(
     url.format({
