@@ -33,7 +33,7 @@
     "fix-path": "^5.0.0",
     "jquery": "^4.0.0",
     "lowdb": "^7.0.1",
-    "primeng": "^21.1.1",
+    "primeng": "^21.1.5",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "which": "^6.0.1"
@@ -45,9 +45,9 @@
     "@electron/packager": "^19.1.0",
     "@types/jquery": "^4.0.0",
     "electron": "^41.1.1",
-    "jsdom": "^28.1.0",
+    "jsdom": "^29.0.1",
     "typescript": "~5.9.3",
-    "vitest": "^4.0.18"
+    "vitest": "^4.1.2"
   },
   "overrides": {
     "got": "^14.5.0",
