@@ -22,34 +22,31 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "^21.2.7",
-    "@angular/compiler": "^21.2.7",
-    "@angular/core": "^21.2.7",
-    "@angular/forms": "^21.2.7",
-    "@angular/platform-browser": "^21.2.7",
-    "@angular/router": "^21.2.7",
+    "@angular/common": "^21.2.15",
+    "@angular/compiler": "^21.2.15",
+    "@angular/core": "^21.2.15",
+    "@angular/forms": "^21.2.15",
+    "@angular/platform-browser": "^21.2.15",
+    "@angular/router": "^21.2.15",
     "@primeuix/themes": "^2.0.3",
     "ffbinaries-plus": "^1.2.4",
     "fix-path": "^5.0.0",
     "jquery": "^4.0.0",
     "lowdb": "^7.0.1",
-    "primeng": "^21.1.5",
+    "primeng": "^21.1.8",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "which": "^6.0.1"
+    "which": "^7.0.0"
   },
   "devDependencies": {
-    "@angular/build": "^21.2.6",
-    "@angular/cli": "^21.2.6",
-    "@angular/compiler-cli": "^21.2.6",
-    "@electron/packager": "^19.1.0",
+    "@angular/build": "^21.2.13",
+    "@angular/cli": "^21.2.13",
+    "@angular/compiler-cli": "^21.2.15",
+    "@electron/packager": "^20.0.0",
     "@types/jquery": "^4.0.0",
-    "electron": "^41.1.1",
-    "jsdom": "^29.0.1",
+    "electron": "^42.3.0",
+    "jsdom": "^29.1.1",
     "typescript": "~5.9.3",
-    "vitest": "^4.1.2"
-  },
-  "overrides": {
-    "got": "^14.5.0"
+    "vitest": "^4.1.7"
   }
 }
