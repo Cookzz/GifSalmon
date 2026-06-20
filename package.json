@@ -13,7 +13,7 @@
   "author": "brian@ndmweb.com (@dudewheresmycode)",
   "license": "MIT",
   "devDependencies": {
-    "@electron/packager": "^20.0.0",
-    "electron": "^42.3.0"
+    "@electron/packager": "^20.0.1",
+    "electron": "^42.4.1"
   }
 }
