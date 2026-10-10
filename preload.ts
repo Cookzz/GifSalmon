@@ -1,4 +1,6 @@
-import { contextBridge, ipcRenderer, webUtils, shell, app } from 'electron';
+import electron from 'electron';
+const { contextBridge, ipcRenderer, webUtils, shell, app } = electron
+
 import { parse, join } from 'path'
 import { format } from 'url'
 

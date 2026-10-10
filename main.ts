@@ -1,10 +1,10 @@
-import { 
-  app, 
-  BrowserWindow, 
-  ipcMain, 
-  screen, 
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  screen,
   dialog,
-  webUtils 
+  webUtils
 } from 'electron'
 import fixPath from 'fix-path';
 import { spawn, exec, ChildProcessWithoutNullStreams } from 'node:child_process'
@@ -13,11 +13,12 @@ import { unlinkSync, statSync } from 'node:fs'
 import * as url from 'node:url'
 import * as util from 'node:util'
 
-/* Typescript doesn't work well on these */
-const { Low } = require('lowdb')
-const { JSONFile } = require('lowdb/node')
-const { sync } = require('which')
-const { detectPlatform, downloadFiles } = require('ffbinaries-plus');
+import { LowSync } from 'lowdb'
+import { JSONFile } from 'lowdb/node'
+import { detectPlatform, downloadFiles } from 'ffbinaries-plus'
+
+import which from 'which'
+const { sync } = which
 
 fixPath()
 const settingsPath = join(app.getPath('userData'),'app_db.json');
@@ -34,6 +35,20 @@ enum PresetTypes {
   default = "default",
   balanced = "balanced",
   max = "max"
+}
+
+//create unique default data type
+type Data = {
+  ffmpeg: {
+    ffmpeg: boolean,
+    ffprobe: boolean
+  },
+  window: {
+    x: number,
+    y: number,
+    width: number,
+    height: number
+  }
 }
 
 //init variables here
@@ -57,14 +72,14 @@ const createWindow = (needs_ffmpeg?: boolean) => {
     height: height,
     webPreferences: {
         nodeIntegration: true,
-        preload: join(__dirname, 'preload.js')
+        preload: join(import.meta.dirname, 'preload.js')
     }
   });
 
   // load the dist folder from Angular
   win.loadURL(
     url.format({
-      pathname: join(__dirname, "/dist/browser/index.html"),
+      pathname: join(import.meta.dirname, "/dist/browser/index.html"),
       protocol: "file:",
       slashes: true,
       hash: (needs_ffmpeg ? '/download' : null)
@@ -78,28 +93,41 @@ const createWindow = (needs_ffmpeg?: boolean) => {
 }
 
 app.whenReady().then(() => {
-  db = new Low(new JSONFile(settingsPath), { ffmpeg: {ffmpeg:false, ffprobe:false}, window:{x:0, y:0, width:800, height:600}});
+  const defaultData: Data = {
+    ffmpeg: {
+      ffmpeg: false,
+      ffprobe: false
+    },
+    window: {
+      x: 0,
+      y: 0,
+      width: 800,
+      height: 600
+    }
+  }
+
+  db = new LowSync(new JSONFile(settingsPath), defaultData);
   db.write();
 
   const { ffmpeg } = db.data
   let ffmpeg_store = ffmpeg
   console.log(ffmpeg_store);
 
-  let ffmpegOpts = null;
-  if(ffmpeg_store.ffmpeg){ 
-      ffmpegOpts = { path: dirname(ffmpeg_store.ffmpeg), nothrow: true } 
+  let ffmpegOpts: any = { nothrow: true };
+  if(ffmpeg_store.ffmpeg){
+      ffmpegOpts = { path: dirname(ffmpeg_store.ffmpeg), nothrow: true }
   }
 
-  const hasFfmpeg = sync('ffmpeg', ffmpegOpts ? ffmpegOpts : { nothrow: true })
+  const hasFfmpeg = sync('ffmpeg', ffmpegOpts)
 
-  ffmpeg_path = (hasFfmpeg) ? hasFfmpeg : false;
+  ffmpeg_path = (hasFfmpeg) ? hasFfmpeg : "";
   let ffprobeOpts = {};
-  if (ffmpeg_store.ffprobe) { 
-      ffprobeOpts = { path: dirname(ffmpeg_store.ffprobe) } 
+  if (ffmpeg_store.ffprobe) {
+      ffprobeOpts = { path: dirname(ffmpeg_store.ffprobe) }
   }
 
-  const hasffprobe = sync('ffprobe', ffprobeOpts ? ffprobeOpts : { nothrow: true })
-  ffprobe_path = (hasffprobe) ? hasffprobe : false;
+  const hasffprobe = sync('ffprobe', ffprobeOpts)
+  ffprobe_path = (hasffprobe) ? hasffprobe : "";
 
   console.log(ffmpeg_path, ffprobe_path);
   createWindow(!ffmpeg_path || !ffprobe_path);
@@ -133,10 +161,10 @@ ipcMain.on('install_ffmpeg', (event, input) => {
 
       db.update(({ ffmpeg }: any) => ffmpeg = Object.assign({}, ffmpeg, { ffmpeg: { ffmpeg: ffmpeg_path, ffprobe: ffprobe_path } }))
 
-      if (win){
+    if (win) {
         win.loadURL(
           url.format({
-            pathname: join(__dirname, "/dist/browser/index.html"),
+            pathname: join(import.meta.dirname, "/dist/browser/index.html"),
             protocol: "file:",
             slashes: true
           })
@@ -320,13 +348,13 @@ const exportAsWebp = (event: any, input: any, output: any, palette: any, setting
   // const stats = settings.color.stats_mode || 'full';
   // const dither = settings.color.dither ? ('bayer:bayer_scale='+settings.color.dither_scale) : 'none';
   // const colors = settings.color.colors || 256;
-  
+
   if(ffmpeg_ps) ffmpeg_ps.kill();
 
   const compressionOptions = getWebpSettings(input, output, settings)
 
   ffmpeg_ps = spawn(ffmpeg_path, compressionOptions)
-  
+
   ffmpeg_ps.stderr.on('data', (d) => {
     const progress = parseProgressLine(d.toString());
     console.log(progress);
@@ -445,13 +473,13 @@ const parseProgressLine = (line: string) => {
   const progressParts = line.split(' ');
 
   // Split every progress part by "=" to get key and value
-  progressParts.forEach((part: any) => {
+  progressParts.forEach((part: string) => {
       const progressSplit = part.split('=', 2);
       const key = progressSplit[0];
       const value = progressSplit[1];
 
       // This is not a progress line
-      if(typeof value === 'undefined') return null;
+      if(typeof value === 'undefined') return;
 
       progress[key] = value;
   })
