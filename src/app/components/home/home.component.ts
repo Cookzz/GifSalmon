@@ -2,7 +2,6 @@ import { Component, NgZone, ChangeDetectionStrategy, ChangeDetectorRef } from '@
 import { FileSizePipe, RatioPipe, NumberPipe, FrameratePipe } from '../../pipes'
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { TooltipModule } from 'primeng/tooltip';
 
 import { Loader } from "../loader/loader.component";
 import { ElectronService } from '../../../service/electron.service';
@@ -13,7 +12,7 @@ import { PixelPalette } from "../pixel-palette/palette.component";
 
 @Component({
   selector: 'home',
-  imports: [FileSizePipe, RatioPipe, NumberPipe, FormsModule, CommonModule, TooltipModule, Loader, FrameScrubber, PixelPalette],
+  imports: [FileSizePipe, RatioPipe, NumberPipe, FormsModule, CommonModule, Loader, FrameScrubber, PixelPalette],
   providers: [FrameratePipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -77,10 +76,10 @@ export class HomeComponent {
       console.error("No video stream found");
       return;
     };
-    
+
     this.frames.max = Number((Math.floor(videoStream.duration * 10) / 10).toFixed(1)) - 0.1;
-    this.settings.probe = { 
-      duration: videoStream.duration, 
+    this.settings.probe = {
+      duration: videoStream.duration,
       rate: (videoStream?.r_frame_rate ?? videoStream?.avg_frame_rate)
     }
 
@@ -149,7 +148,7 @@ export class HomeComponent {
 
       const path = this.electron.getPathForFile(file)
       console.log("get file path", path)
-      
+
       this.frames.current = 0
       this.status.state = 1
       this.palette = null

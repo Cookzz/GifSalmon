@@ -137,15 +137,15 @@
                 <option value="custom">Custom</option>
               </select>
             </div>
-            <a class="infolink" [pTooltip]="presetTooltipContent" tooltipPosition="right"></a>
+            <!--<a class="infolink" [pTooltip]="presetTooltipContent" tooltipPosition="right"></a>
             <ng-template #presetTooltipContent>
               <div class="tooltip-content">
                   <label class="tooltip-line"><b>Default: </b>Use default compression settings defined by the tool</label>
                   <label class="tooltip-line"><b>Balanced: </b>Use reasonable compression settings</label>
-                  <label class="tooltip-line"><b>Max: </b>Use best compression possible</label> 
+                  <label class="tooltip-line"><b>Max: </b>Use best compression possible</label>
                   <label class="tooltip-line"><b>Custom: </b>Allow user customization</label>
               </div>
-            </ng-template>
+            </ng-template>-->
           </div>
 
           <div class="form-group">
@@ -176,7 +176,7 @@
             </div>
             <div><label class="comments">Higher is better but slower</label></div>
           </div>
-          
+
           <div class="form-group">
             <h5>Quality</h5>
             <div class="form-control">
@@ -202,7 +202,7 @@
             <div class="progress">
               <div class="progress-fill" [ngClass]="{'finished': status.export.progress == 100, 'spin': status.export.canceling}" [ngStyle]="{'width': status.export.progress+'%'}"></div>
             </div>
-  
+
             <div class="progress-info">
               <div class="progress-text" [ngClass]="{'finished': status.export.progress == 100}">
                 <span class="progress-text-percent" [hidden]="!(status.export.progress < 100) && status.export.canceling">{{status.export.progress|number}}%</span>

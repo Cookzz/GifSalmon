@@ -1,17 +1,17 @@
-import { 
-    Component, 
-    EventEmitter, 
-    Input, 
-    OnChanges, 
-    Output, 
-    SimpleChanges, 
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
     ViewChild,
     ElementRef,
     Renderer2
 } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
-import { ColorPickerModule } from 'primeng/colorpicker';
+import { ColorPickerModule } from '@iplab/ngx-color-picker';
 
 @Component({
     selector: "pixel-palette",
@@ -114,10 +114,10 @@ export class PixelPalette implements OnChanges {
           canvas.width = img.width;
           canvas.height = img.height;
           const ctx = canvas.getContext('2d');
-          
+
           if (ctx){
             ctx.drawImage(img, 0, 0);
-          
+
             const pixel_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const pixel_array = [];
 
