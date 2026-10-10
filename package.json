@@ -5,10 +5,11 @@
   "main": "main.js",
   "author": "Cookzz",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "tsc main.ts && tsc preload.ts && ng build --base-href ./",
+    "build": "tsc --ignoreConfig main.ts src/declaration/ffbinaries-plus.d.ts && tsc --ignoreConfig preload.ts && ng build --base-href ./",
     "watch": "ng build --watch --configuration development",
     "electron-tsc": "npm run build && electron .",
     "electron": "ng build --base-href ./ && electron .",
