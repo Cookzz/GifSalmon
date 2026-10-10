@@ -14,7 +14,7 @@
   "license": "MIT",
   "devDependencies": {
     "@electron/packager": "^20.3.0",
-    "electron": "^42.11.12",
+    "electron": "^44.7.0",
     "electron-builder": "26.17.0"
   }
 }
