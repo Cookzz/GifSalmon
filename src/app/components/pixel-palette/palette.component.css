@@ -63,6 +63,14 @@
     /* box-shadow: 1px 1px 5px #000; */
     transform: scale(1.5);
 }
-.p-colorpicker-panel  {
-    background-color: #2a2a2a;
+.picker-control chrome-picker  {
+    --ngx-color-picker-surface: #2a2a2a;
+    --ngx-color-picker-border: #2a2a2a;
+    --ngx-color-picker-divider: #3a3a3a;
+    --ngx-color-picker-control-border: #4a4a4a;
+    --ngx-color-picker-input-label-color: #b4b4b4;
+    --ngx-color-picker-input-color: #e0e0e0;
+    --ngx-color-picker-input-secondary-color: #9b9b9b;
+    --ngx-color-picker-input-border-color: #4a4a4a;
+    --ngx-color-picker-pencil-color: #e0e0e0;
 }

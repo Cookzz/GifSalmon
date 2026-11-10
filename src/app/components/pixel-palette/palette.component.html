@@ -13,11 +13,11 @@
     <div class="hex-control">
       <div class="color-preview" [ngStyle]="{'background-color':'#'+hexValue}"></div>
       <div class="hex-input-wrapper">
-        <input type="text" class="hex-input" [(ngModel)]="hexValue" maxlength="6" />
+        <input type="text" class="hex-input" [(ngModel)]="hexValue" maxlength="6" (ngModelChange)="onHexInputChanged($event)" />
       </div>
     </div>
     <div class="picker-control">
-      <chrome-picker [(ngModel)]="rgb" format="rgb" (onChange)="onColorPickerChanged()" />
+      <chrome-picker [color]="selectedColor" (colorChange)="onColorPickerChanged($event)" [control]="colorControl" />
     </div>
   </div>
 </div>

@@ -12,7 +12,7 @@ import {
 } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
-import { ColorPickerModule } from '@iplab/ngx-color-picker';
+import { ColorPickerModule, ColorPickerControl } from '@iplab/ngx-color-picker';
 
 @Component({
     selector: "pixel-palette",
@@ -37,12 +37,17 @@ export class PixelPalette implements OnChanges {
     stored: any = null
     startedIn: boolean = false
     rgb: any = {}
+    selectedColor: string = 'rgb(255, 255, 255)'
+    colorControl: ColorPickerControl = new ColorPickerControl()
+                                            .hideAlphaChannel()
+                                            .hidePresets()
+                                            .setValueFrom('rgb(255, 255, 255)')
 
     scrollListener: any = null;
 
     @ViewChild("pixelpicker", { read: ElementRef }) picker?: ElementRef;
 
-    constructor(private renderer: Renderer2){}
+    constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef){}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.['palette'] && (changes?.['palette']?.currentValue !== changes?.['palette']?.previousValue)){
@@ -56,6 +61,7 @@ export class PixelPalette implements OnChanges {
 
         const color = this.pixels[i];
         this.rgb = this.rgb_to_obj(color[0], color[1], color[2])
+        this.selectedColor = `rgb(${this.rgb.r}, ${this.rgb.g}, ${this.rgb.b})` // we try to retain formating post-migration
         this.stored = color;
         this.pixelIndex = i;
         this.hexValue = this.rgb_to_hex(color[0], color[1], color[2]);
@@ -169,8 +175,17 @@ export class PixelPalette implements OnChanges {
         this.startedIn = true
     }
 
-    onColorPickerChanged(){
+    onColorPickerChanged(color: string){
+        this.selectedColor = color
+        this.rgb = this.rgb_from_string(color)
         this.hexValue = this.rgb_to_hex(this.rgb.r, this.rgb.g, this.rgb.b)
+    }
+
+    onHexInputChanged(hex: string){
+        // only sync the picker when the user typed a complete 6-digit hex value
+        if (/^[0-9A-Fa-f]{6}$/.test(hex ?? '')){
+            this.selectedColor = '#' + hex
+        }
     }
 
     /* RGB conversion */
@@ -183,6 +198,12 @@ export class PixelPalette implements OnChanges {
 
     rgb_to_obj(r: number, g: number, b: number){
         return { r, g, b }
+    }
+
+    /* parse the chrome-picker color string ('rgb(12, 34, 56)') back into an {r,g,b} object */
+    rgb_from_string(color: string){
+        const parts = (color ?? '').replace(/\s/g, '').match(/^rgba?\((\d+),(\d+),(\d+)/)
+        return parts ? { r: Number(parts[1]), g: Number(parts[2]), b: Number(parts[3]) } : { r: 0, g: 0, b: 0 }
     }
 
     /* Scroll listener for palette color picker */
