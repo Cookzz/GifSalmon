@@ -71,14 +71,21 @@ export class PixelPalette implements OnChanges {
             const top = p?.top ?? 0
             const left = p?.left ?? 0
 
-            this.renderer.appendChild(document.body, this.picker?.nativeElement)
+            const pickerEl = this.picker?.nativeElement as HTMLElement;
+
+            //show the popup first (display:block) so its real height can be measured
+            this.renderer.appendChild(document.body, pickerEl)
+            this.renderer.addClass(pickerEl, 'open')
+            this.renderer.setStyle(pickerEl, 'left', `${left}px`)
+            this.renderer.setStyle(pickerEl, 'top', '0px')
+
+            //place the popup with its bottom (and arrow) just above the clicked pixel
+            const popupTop = top - pickerEl.offsetHeight - 20
 
             //this helps the palette color picker scroll with the selected palette
-            this.setOrRefreshScrollListener(top)
+            this.setOrRefreshScrollListener(popupTop)
 
-            this.renderer.setStyle(this.picker?.nativeElement, 'top', `${top}px`)
-            this.renderer.setStyle(this.picker?.nativeElement, 'left', `${left}px`)
-            this.renderer.addClass(this.picker?.nativeElement, 'open')
+            this.renderer.setStyle(pickerEl, 'top', `${popupTop}px`)
         }
     }
 
