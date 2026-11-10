@@ -10,7 +10,7 @@
     "version": "1.0.9",
     "main": "main.js",
     "dependencies": {
-        "angular": "^1.8.3",
+        "angular": "npm:@brickhouse-tech/angular-lts@^1.10.2",
         "ffbinaries-plus": "^1.2.4",
         "fix-path": "^5.0.0",
         "jquery": "^4.0.0",
