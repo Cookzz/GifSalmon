@@ -7,7 +7,8 @@ import {
     SimpleChanges,
     ViewChild,
     ElementRef,
-    Renderer2
+    Renderer2,
+    ChangeDetectorRef
 } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
@@ -131,6 +132,7 @@ export class PixelPalette implements OnChanges {
                 pixel_array.push(p);
             }
             this.pixels = pixel_array
+            this.cdr.detectChanges()
           }
         }
     }
