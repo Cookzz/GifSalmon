@@ -58,6 +58,7 @@ let ffmpeg_path: string;
 let ffprobe_path: string;
 let ffmpeg_ps: ChildProcessWithoutNullStreams;
 let exportCancelled: boolean = false
+let palette_cache: { key: string, value: string } | null = null
 
 const createWindow = (needs_ffmpeg?: boolean) => {
   const externalDisplay = screen.getPrimaryDisplay()
@@ -205,23 +206,40 @@ ipcMain.on('getPalette', (event, input, prefs) => {
   const fps = prefs.fps || 24;
   const stats = prefs.color.stats_mode || 'full';
   // var colors = prefs.color.colors || 256;
-  const transparency = (prefs.color.alpha?1:0) || 0;
+  const transparency = (prefs.color.alpha ? 1 : 0) || 0;
   const colors = prefs.color.count || 256;
+  const duration = prefs?.probe?.duration || 0;
+  const target_samples = 300; // fixed at a rate that we need to sample color for
 
   const scaleCmd = `scale=${w}:${h}`;
 
-  const vf = util.format("fps=%s,%s:flags=lanczos,palettegen=stats_mode=%s:max_colors=%s:reserve_transparent=%s", fps, scaleCmd, stats, colors, transparency);
+  // introduce caching first if inputs relevant to color palettes dont really change
+  const cache_key = JSON.stringify([input, colors, stats, transparency, w, h]);
+  if (palette_cache && palette_cache.key === cache_key){
+      event.sender.send('paletteResult', palette_cache.value);
+      return;
+  }
+
+  // we try to cap this at 10 fps max, color sampling doesn't need to go through the whole 24 (or if the video is 60fps, go through 60 fps colors)
+  let sample_fps = Math.min(fps, 10);
+  if (duration > 0 && duration * sample_fps > target_samples) {
+      sample_fps = Math.max(1, Math.round(target_samples / duration));
+  }
+
+  const vf = util.format("fps=%s,%s:flags=bicubic,palettegen=stats_mode=%s:max_colors=%s:reserve_transparent=%s", sample_fps, scaleCmd, stats, colors, transparency);
 
   if (ffmpeg_ps) { ffmpeg_ps.kill(); }
 
-  ffmpeg_ps = spawn(ffmpeg_path, ["-i", input, "-vf", vf, "-f", "image2", "-vcodec", "png", "pipe:1"])
+  ffmpeg_ps = spawn(ffmpeg_path, ["-nostdin", "-i", input, "-vf", vf, "-f", "image2", "-vcodec", "png", "pipe:1"])
 
   let data: any[] = [];
   ffmpeg_ps.stdout.on('data', (d: any) => {
       data.push(d);
   });
   ffmpeg_ps.on('close', () => {
-      event.sender.send('paletteResult', Buffer.concat(data).toString('base64'));
+      const palette_b64 = Buffer.concat(data).toString('base64');
+      palette_cache = { key: cache_key, value: palette_b64 };
+      event.sender.send('paletteResult', palette_b64);
   });
 })
 
