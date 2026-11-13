@@ -23,19 +23,19 @@ const { sync } = which
 fixPath()
 const settingsPath = join(app.getPath('userData'),'app_db.json');
 
-//add enum here
-enum ExportTypes {
-  gif = "gif",
-  apng = "apng",
-  webp = "webp",
-  avif = "avif"
-}
-enum PresetTypes {
-  custom = "custom",
-  default = "default",
-  balanced = "balanced",
-  max = "max"
-}
+const ExportTypes = {
+  gif: "gif",
+  apng: "apng",
+  webp: "webp",
+  avif: "avif"
+} as const
+
+const PresetTypes = {
+  custom: "custom",
+  default: "default",
+  balanced: "balanced",
+  max: "max"
+} as const
 
 //create unique default data type
 type Data = {

@@ -1,4 +1,4 @@
-import { Component, NgZone, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FileSizePipe, RatioPipe, NumberPipe, FrameratePipe } from '../../pipes'
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
