@@ -5,7 +5,7 @@ export interface Defaults {
     dimensions: Dimensions
     fps: number
     color: Colors,
-    exportType: ExportTypes,
+    exportType: ExportTypeKeys,
     export: ExportSettings
 }
 
@@ -48,19 +48,22 @@ interface WebPSettings {
     compression_level: number
     quality: number
     loop: boolean //0 or 1
-    preset: PresetTypes
+    preset: PresetTypesKeys
 }
 
-export enum PresetTypes {
-    custom = "custom",
-    default = "default",
-    balanced = "balanced",
-    max = "max"
-}
+export const ExportTypes = {
+  gif: "gif",
+  apng: "apng",
+  webp: "webp",
+  avif: "avif"
+} as const
 
-export enum ExportTypes {
-    gif = "gif",
-    apng = "apng",
-    webp = "webp",
-    avif = "avif"
-}
+export const PresetTypes = {
+  custom: "custom",
+  default: "default",
+  balanced: "balanced",
+  max: "max"
+} as const
+
+type ExportTypeKeys = typeof ExportTypes[keyof typeof ExportTypes]
+type PresetTypesKeys = typeof PresetTypes[keyof typeof PresetTypes]
