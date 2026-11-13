@@ -137,15 +137,13 @@
                 <option value="custom">Custom</option>
               </select>
             </div>
-            <!--<a class="infolink" [pTooltip]="presetTooltipContent" tooltipPosition="right"></a>
-            <ng-template #presetTooltipContent>
-              <div class="tooltip-content">
-                  <label class="tooltip-line"><b>Default: </b>Use default compression settings defined by the tool</label>
-                  <label class="tooltip-line"><b>Balanced: </b>Use reasonable compression settings</label>
-                  <label class="tooltip-line"><b>Max: </b>Use best compression possible</label>
-                  <label class="tooltip-line"><b>Custom: </b>Allow user customization</label>
-              </div>
-            </ng-template>-->
+            <button type="button" class="infolink" popovertarget="preset-tooltip" aria-label="Preset info"></button>
+            <div id="preset-tooltip" popover class="tooltip-content">
+                <label class="tooltip-line"><b>Default: </b>Use default compression settings defined by the tool</label>
+                <label class="tooltip-line"><b>Balanced: </b>Use reasonable compression settings</label>
+                <label class="tooltip-line"><b>Max: </b>Use best compression possible</label>
+                <label class="tooltip-line"><b>Custom: </b>Allow user customization</label>
+            </div>
           </div>
 
           <div class="form-group">

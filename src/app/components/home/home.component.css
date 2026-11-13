@@ -16,26 +16,49 @@
     font-size: 10px;
 }
 
-.infolink:before
-{
+.infolink:before {
     content: '?';
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
     font-family: sans-serif;
     font-weight: bold;
-    text-align: center;
-    width: 2.5ex;
-    height: 2.5ex;
     font-size: 1.5ex;
-    line-height: 1.8ex;
-    border-radius: 1.2ex;
+    width: 2.6ex;
+    height: 2.6ex;
+    line-height: normal;
+    border-radius: 50%;
     margin-right: 4px;
     margin-left: 5px;
-    padding: 1px;
-    color: white;
+    color: darkgray;
     background: #333;
-    border: 1px solid white;
+    border: 1px solid dimgray;
     text-decoration: none;
     cursor: pointer;
+}
+
+button.infolink {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    anchor-name: --preset-infolink;
+}
+
+#preset-tooltip {
+    position: fixed;
+    position-anchor: --preset-infolink;
+    position-area: right;
+    position-try-fallbacks: left;
+    margin: 0 8px;
+    padding: 8px 10px;
+    background: #2a2a2a;
+    color: #fff;
+    border: 1px solid #4a4a4a;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, .3) 0 1px 4px;
+    max-width: 240px;
 }
 
 .tooltip-content {
