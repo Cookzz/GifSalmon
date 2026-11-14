@@ -9,7 +9,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "tsc --ignoreConfig main.ts src/declaration/ffbinaries-plus.d.ts && tsc --ignoreConfig preload.ts && ng build --base-href ./",
+    "build": "tsc -p tsconfig.json && ng build --base-href ./",
     "watch": "ng build --watch --configuration development",
     "electron-tsc": "npm run build && electron .",
     "electron": "ng build --base-href ./ && electron .",

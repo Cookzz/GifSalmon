@@ -32,5 +32,8 @@
     "main.ts",
     "preload.ts",
     "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }
