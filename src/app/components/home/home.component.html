@@ -112,7 +112,7 @@
             <h5>Colors</h5>
             <div class="form-control">
               <div class="custom-range">
-                <div class="custom-range-value"><input type="number" [disabled]="status.state<5" min="16" max="256" (blur)="refreshPalette()" [(ngModel)]="color_value" /></div>
+                <div class="custom-range-value"><input type="number" [disabled]="status.state<5" min="16" max="256" (blur)="refreshPalette()" [(ngModel)]="settings.color.count" /></div>
                 <div class="custom-range-input">
                   <input type="range" min="16" step="2" max="256" [disabled]="status.state<5" (mouseup)="refreshPalette()" [(ngModel)]="settings.color.count" />
                 </div>

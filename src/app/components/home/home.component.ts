@@ -45,7 +45,6 @@ export class HomeComponent {
 
   thumbnail: string | null = null
   palette = null
-  color_value = 256
 
   //expose preloaded function in the renderer
   electron = new ElectronService().getElectron()
@@ -93,7 +92,6 @@ export class HomeComponent {
 
     //get thumbnail
     this.refreshPalette();
-    this.cdr.detectChanges();
   }
 
   getPaletteResult(event: any, paletteResult: any){
@@ -169,6 +167,7 @@ export class HomeComponent {
     const path = this.electron.getPathForFile(this.settings.file.input)
 
     this.electron.send('getPalette', path, this.settings)
+    this.cdr.detectChanges();
   }
 
   refreshFps(){
