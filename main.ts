@@ -71,6 +71,7 @@ const createWindow = (needs_ffmpeg?: boolean) => {
   win = new BrowserWindow({
     width: width,
     height: height,
+    icon: app.isPackaged ? undefined : join(import.meta.dirname, 'resources', 'logo-hires-v2.ico'),
     webPreferences: {
         nodeIntegration: true,
         preload: join(import.meta.dirname, 'preload.js')
