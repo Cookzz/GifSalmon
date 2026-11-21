@@ -1,0 +1,54 @@
+<Page
+    x:Class="GifSalmon.Shell.Views.InstallPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource App.Background}">
+        <StackPanel MaxWidth="420" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10">
+            <TextBlock FontSize="18" FontWeight="Bold" Foreground="{ThemeResource App.Foreground}"
+                       Text="Download &amp; Install FFmpeg" />
+            <TextBlock Foreground="{ThemeResource App.Foreground}" TextWrapping="Wrap">
+                <Run Text="GifSalmon uses " />
+                <Hyperlink NavigateUri="https://ffmpeg.org" Foreground="{ThemeResource App.Foreground}">ffmpeg</Hyperlink>
+                <Run Text=" under the hood to convert to gif format. Don't fret, we can download this library for you." />
+            </TextBlock>
+
+            <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,10,0,0"
+                        Visibility="{x:Bind NotInstalling, Mode=OneWay}">
+                <Button Style="{StaticResource Btn}" Content="Quit" Click="OnQuit" />
+                <Button Style="{StaticResource BtnPrimary}" Content="Download &amp; Install" Click="OnInstall">
+                    <Button.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.ThemeDictionaries>
+                                <ResourceDictionary x:Key="Dark">
+                                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#F49B90" />
+                                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#3A393B" />
+                                    <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#E4574A" />
+                                    <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#3A393B" />
+                                </ResourceDictionary>
+                            </ResourceDictionary.ThemeDictionaries>
+                        </ResourceDictionary>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,10,0,0"
+                        Visibility="{x:Bind Installing, Mode=OneWay}">
+                <ProgressRing Width="24" Height="24" IsActive="{x:Bind Installing, Mode=OneWay}" />
+                <TextBlock VerticalAlignment="Center" Foreground="{ThemeResource App.Foreground}" Text="Installing ffmpeg..." />
+            </StackPanel>
+
+            <!-- download progress, export-style: cyan bar + "received / total (speed)" -->
+            <StackPanel Spacing="6" Margin="0,10,0,0" Width="360"
+                        Visibility="{x:Bind Installing, Mode=OneWay}">
+                <ProgressBar x:Name="InstallBar" Height="10" CornerRadius="0" BorderThickness="0" Maximum="100"
+                            Background="#101010" Foreground="#46CCF3" />
+                <TextBlock x:Name="InstallProgressText" FontSize="11"
+                           Foreground="{ThemeResource App.ForegroundMuted}" TextAlignment="Center" Text="" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>
